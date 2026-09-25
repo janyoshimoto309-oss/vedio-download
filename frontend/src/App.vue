@@ -2,7 +2,6 @@
 import { onMounted, ref } from 'vue'
 import UrlSearch from './components/UrlSearch.vue'
 import VideoResult from './components/VideoResult.vue'
-import FeatureCards from './components/FeatureCards.vue'
 import { downloadVideo, fetchHealth, fetchVideoInfo } from './api/video'
 
 const url = ref('')
@@ -95,8 +94,6 @@ async function onDownload({ format_id, prefer_mode }) {
       </p>
 
       <VideoResult v-if="info" :info="info" :downloading="downloading" @download="onDownload" />
-
-      <FeatureCards />
     </main>
 
     <footer class="border-t border-slate-100 bg-white py-8 text-center text-xs text-slate-400">
