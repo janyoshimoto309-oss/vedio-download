@@ -23,6 +23,7 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
     except ImportError as exc:
         raise DownloadError("未安装 Playwright。请在 backend 虚拟环境执行: pip install playwright && playwright install chromium") from exc
 
+    aweme_id = _id_from_url(page_url)
     captured: list[str] = []
 
     def on_response(response) -> None:
@@ -73,7 +74,8 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
     except Exception as exc:
         raise DownloadError(f"无头浏览器打开抖音失败：{exc}") from exc
 
-    media = _unique(_collect_media(captured, snapshot))
+    target_id = _id_from_url(final_url) if _id_from_url(final_url) != "douyin" else aweme_id
+    media = _pick_media(captured, snapshot, target_id)
     if not media:
         raise DownloadError("浏览器打开了页面，但没有拿到视频地址（可能出现验证码或该内容无法公开播放）")
 
@@ -101,7 +103,7 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
 
     thumb = snapshot.get("thumbnail") or None
     return {
-        "id": _id_from_url(final_url or page_url),
+        "id": target_id,
         "title": title,
         "thumbnail": thumb,
         "duration": duration_val,
@@ -114,18 +116,28 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
 
 
 _PAGE_JS = """() => {
-  const videos = [...document.querySelectorAll('video')].map(v => ({
-    src: v.currentSrc || v.src || '',
-    duration: v.duration,
-    poster: v.poster || ''
-  }));
+  const videos = [...document.querySelectorAll('video')].map(v => {
+    const r = v.getBoundingClientRect();
+    return {
+      src: v.currentSrc || v.src || '',
+      duration: v.duration,
+      poster: v.poster || '',
+      area: Math.max(0, r.width) * Math.max(0, r.height)
+    };
+  });
+  const playable = videos.filter(v =>
+    (v.src.includes('douyinvod.com') || v.src.includes('video/tos/')) && v.area > 0
+  );
+  playable.sort((a, b) => b.area - a.area);
+  const main = playable[0] || videos.find(v => v.src.startsWith('http')) || {};
   const og = document.querySelector('meta[property="og:image"]');
   const render = document.getElementById('RENDER_DATA');
   return {
     title: document.title || '',
-    thumbnail: (og && og.content) || (videos.find(v => v.poster) || {}).poster || '',
-    duration: (videos.find(v => v.duration && isFinite(v.duration)) || {}).duration,
-    videoSrcs: videos.map(v => v.src),
+    thumbnail: (og && og.content) || main.poster || '',
+    duration: (main.duration && isFinite(main.duration)) ? main.duration : null,
+    mainSrc: main.src || '',
+    videoSrcs: playable.map(v => v.src),
     renderText: render ? render.textContent : ''
   };
 }"""
@@ -140,37 +152,68 @@ def _looks_like_media(url: str) -> bool:
     return any(h in low for h in _CDN_HINTS)
 
 
-def _collect_media(captured: list[str], snapshot: dict[str, Any]) -> list[str]:
-    out: list[str] = []
-    for src in snapshot.get("videoSrcs") or []:
-        if isinstance(src, str) and src.startswith("http"):
-            out.append(src)
-    out.extend(captured)
-    render = snapshot.get("renderText") or ""
-    if render:
-        out.extend(_urls_from_render(render))
-    return out
+def _pick_media(captured: list[str], snapshot: dict[str, Any], aweme_id: str) -> list[str]:
+    matched = _urls_from_render(snapshot.get("renderText") or "", aweme_id if aweme_id != "douyin" else None)
+    main = snapshot.get("mainSrc") or ""
+    ordered: list[str] = []
+    if isinstance(main, str) and main.startswith("http") and _looks_like_media(main):
+        ordered.append(main)
+    ordered.extend(matched)
+    if not ordered:
+        ordered.extend(reversed(captured))
+    return _unique(ordered)
 
 
-def _urls_from_render(text: str) -> list[str]:
+def _node_id(node: dict[str, Any]) -> str:
+    for key in ("awemeId", "aweme_id", "groupId", "group_id", "aweme_id_str"):
+        val = node.get(key)
+        if val is not None and str(val).isdigit():
+            return str(val)
+    return ""
+
+
+def _urls_from_render(text: str, aweme_id: str | None = None) -> list[str]:
+    if not text:
+        return []
     try:
         data = json.loads(unquote(text))
     except Exception:
         return re.findall(r"https://[^\"\\]+douyinvod[^\"\\]+", text)
+
     found: list[str] = []
 
-    def walk(node: Any) -> None:
+    def collect_urls(node: Any) -> None:
         if isinstance(node, dict):
             for k, v in node.items():
-                if k in {"src", "url"} and isinstance(v, str) and v.startswith("http") and _looks_like_media(v):
+                if k in {"src", "url", "playApi", "play_addr"} and isinstance(v, str) and v.startswith("http") and _looks_like_media(v):
                     found.append(v)
+                elif k in {"url_list", "urlList"} and isinstance(v, list):
+                    for item in v:
+                        if isinstance(item, str) and item.startswith("http") and _looks_like_media(item):
+                            found.append(item)
                 else:
-                    walk(v)
+                    collect_urls(v)
         elif isinstance(node, list):
             for item in node:
-                walk(item)
+                collect_urls(item)
 
-    walk(data)
+    def walk_match(node: Any) -> None:
+        if isinstance(node, dict):
+            nid = _node_id(node)
+            if aweme_id and nid == aweme_id:
+                collect_urls(node)
+                return
+            for v in node.values():
+                walk_match(v)
+        elif isinstance(node, list):
+            for item in node:
+                walk_match(item)
+
+    if aweme_id:
+        walk_match(data)
+        if found:
+            return found
+    collect_urls(data)
     return found
 
 

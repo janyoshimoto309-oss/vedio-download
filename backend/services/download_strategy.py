@@ -6,6 +6,25 @@ from config import DIRECT_UNRELIABLE_EXTRACTORS, FRAGMENT_PROTOCOLS
 
 Mode = Literal["server", "redirect", "proxy"]
 
+# auto 模式下这些站几乎总是走 server。下载时跳过第二次 get_info。
+# 抖音不在这里：下载仍走 get_info，但会命中解析缓存，不会再开浏览器。
+_SERVER_HOST_MARKERS = (
+    "youtube.com",
+    "youtu.be",
+    "bilibili.com",
+    "b23.tv",
+)
+
+
+def skip_redownload_info_probe(url: str, prefer: str = "auto") -> bool:
+    """解析页已拉过元数据时，下载阶段是否可直接落盘而不再 extract_info。"""
+    if prefer == "server":
+        return True
+    if prefer == "direct":
+        return False
+    low = (url or "").lower()
+    return any(marker in low for marker in _SERVER_HOST_MARKERS)
+
 
 def _extractor_key(info: dict[str, Any]) -> str:
     return str(info.get("extractor_key") or info.get("extractor") or "").lower()

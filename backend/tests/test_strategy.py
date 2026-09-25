@@ -4,11 +4,23 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from services.download_strategy import choose_mode
+from services.download_strategy import choose_mode, skip_redownload_info_probe
 from services.proxy_token import issue, verify
 
 
 class StrategyTests(unittest.TestCase):
+    def test_skip_redownload_for_bilibili_auto(self):
+        self.assertTrue(skip_redownload_info_probe("https://www.bilibili.com/video/BV1xx", "auto"))
+
+    def test_skip_redownload_for_youtube_auto(self):
+        self.assertTrue(skip_redownload_info_probe("https://www.youtube.com/watch?v=abc", "auto"))
+
+    def test_skip_redownload_not_for_douyin(self):
+        self.assertFalse(skip_redownload_info_probe("https://www.douyin.com/video/1", "auto"))
+
+    def test_skip_redownload_false_for_direct(self):
+        self.assertFalse(skip_redownload_info_probe("https://www.bilibili.com/video/BV1xx", "direct"))
+
     def test_fragment_uses_server(self):
         mode, reason = choose_mode({}, {"protocol": "m3u8", "url": "https://x/a.m3u8"}, "auto")
         self.assertEqual(mode, "server")

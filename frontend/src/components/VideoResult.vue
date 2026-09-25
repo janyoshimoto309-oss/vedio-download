@@ -83,7 +83,11 @@ function pick(id) {
 }
 
 function submit() {
-  emit('download', { format_id: formatId.value, prefer_mode: 'auto' })
+  emit('download', {
+    format_id: formatId.value,
+    prefer_mode: 'auto',
+    stream_kind: selected.value?.stream_kind,
+  })
 }
 
 function onDocClick(e) {

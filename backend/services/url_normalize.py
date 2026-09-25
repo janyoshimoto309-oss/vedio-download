@@ -33,6 +33,11 @@ def extract_video_url(raw: str) -> str:
     return canonicalize_douyin(picked)
 
 
+def is_douyin_url(url: str) -> bool:
+    host = _host(url)
+    return host == "douyin.com" or host.endswith(".douyin.com") or host == "iesdouyin.com" or host.endswith(".iesdouyin.com")
+
+
 def canonicalize_douyin(url: str) -> str:
     """把用户主页/搜索弹窗链接改写成 /video/{id}，供 yt-dlp Douyin extractor 识别。"""
     parsed = urlparse(url)

@@ -11,7 +11,7 @@ import httpx
 
 from config import COOKIES_FILE, COOKIES_FROM_BROWSER, DOWNLOADS_DIR, YTDLP_IMPERSONATE
 from services.douyin_browser import extract_douyin_in_browser
-from services.url_normalize import extract_video_url
+from services.url_normalize import extract_video_url, is_douyin_url
 
 _COOKIE_HINT = (
     "抖音需要新鲜访客 Cookie。请先在浏览器打开该视频（过完验证码即可，不必登录），"
@@ -25,7 +25,7 @@ def ffmpeg_available() -> bool:
 
 
 def _is_douyin(url: str) -> bool:
-    return "douyin.com" in url.lower()
+    return is_douyin_url(url)
 
 
 def _impersonate_target():
@@ -46,11 +46,12 @@ def build_ydl_opts(url: str | None = None, **extra: Any) -> dict[str, Any]:
         "no_warnings": True,
         "noplaylist": True,
     }
-    if COOKIES_FILE.is_file() and COOKIES_FILE.stat().st_size > 0:
-        opts["cookiefile"] = str(COOKIES_FILE)
-    if COOKIES_FROM_BROWSER:
-        opts["cookiesfrombrowser"] = (COOKIES_FROM_BROWSER,)
+    # Cookie / 伪装只用于抖音 yt-dlp 回退，避免拖慢 YouTube / B 站等
     if url and _is_douyin(url):
+        if COOKIES_FILE.is_file() and COOKIES_FILE.stat().st_size > 0:
+            opts["cookiefile"] = str(COOKIES_FILE)
+        if COOKIES_FROM_BROWSER:
+            opts["cookiesfrombrowser"] = (COOKIES_FROM_BROWSER,)
         opts["http_headers"] = {
             "Referer": "https://www.douyin.com/",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
@@ -74,11 +75,18 @@ def _rewrite_error(url: str, exc: BaseException) -> DownloadError:
 
 
 class VideoDownloader:
+    _info_cache: dict[str, dict[str, Any]] = {}
+
     def get_info(self, url: str) -> dict[str, Any]:
         url = extract_video_url(url)
+        cached = self._info_cache.get(url)
+        if cached is not None:
+            return cached
         if _is_douyin(url):
             try:
-                return extract_douyin_in_browser(url)
+                info = extract_douyin_in_browser(url)
+                self._info_cache[url] = info
+                return info
             except DownloadError:
                 pass
         ydl_opts = build_ydl_opts(url, skip_download=True)
@@ -93,7 +101,9 @@ class VideoDownloader:
                     if not first:
                         raise DownloadError("播放列表为空，请粘贴单条视频链接")
                     info = first
-                return ydl.sanitize_info(info)
+                sanitized = ydl.sanitize_info(info)
+                self._info_cache[url] = sanitized
+                return sanitized
         except DownloadError as exc:
             raise _rewrite_error(url, exc) from exc
         except Exception as exc:
@@ -111,11 +121,18 @@ class VideoDownloader:
             return info
         return None
 
-    def download(self, url: str, format_id: str, out_dir: Path, merge_audio: bool = False) -> Path:
+    def download(
+        self,
+        url: str,
+        format_id: str,
+        out_dir: Path,
+        merge_audio: bool = False,
+        cached_info: dict[str, Any] | None = None,
+    ) -> Path:
         url = extract_video_url(url)
         out_dir.mkdir(parents=True, exist_ok=True)
         if _is_douyin(url):
-            info = self.get_info(url)
+            info = cached_info if cached_info is not None else self.get_info(url)
             fmt = self.get_format(info, format_id) or (info.get("formats") or [None])[0]
             if fmt and (fmt.get("url") or "").startswith("http"):
                 return _download_direct(fmt, info.get("title") or "video", out_dir)

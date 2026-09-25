@@ -19,7 +19,7 @@ from models.schemas import (
     VideoInfoResponse,
 )
 from services import proxy_token, task_store
-from services.download_strategy import choose_mode, needs_merge
+from services.download_strategy import choose_mode, needs_merge, skip_redownload_info_probe
 from services.downloader import VideoDownloader, ffmpeg_available, list_user_formats
 from services.url_normalize import extract_video_url
 
@@ -78,12 +78,15 @@ def _server_download(
     fallback: bool,
     reason: str,
     merge_audio: bool = False,
+    cached_info: dict | None = None,
 ) -> DownloadResponse:
     if not task_store.acquire_slot():
         raise HTTPException(status_code=429, detail="当前下载任务过多，请稍后再试")
     task_dir = DOWNLOADS_DIR / uuid.uuid4().hex
     try:
-        path = downloader.download(url, format_id, task_dir, merge_audio=merge_audio)
+        path = downloader.download(
+            url, format_id, task_dir, merge_audio=merge_audio, cached_info=cached_info
+        )
     except DownloadError as exc:
         shutil.rmtree(task_dir, ignore_errors=True)
         msg = str(exc)
@@ -115,6 +118,18 @@ def _server_download(
 @router.post("/download", response_model=DownloadResponse)
 def video_download(body: DownloadRequest) -> DownloadResponse:
     url = extract_video_url(body.url)
+    merge_audio = body.stream_kind == "merge"
+
+    if skip_redownload_info_probe(url, body.prefer_mode):
+        return _server_download(
+            url,
+            body.format_id,
+            fallback=False,
+            reason="服务端下载",
+            merge_audio=merge_audio,
+            cached_info=None,
+        )
+
     try:
         info = downloader.get_info(url)
     except DownloadError as exc:
@@ -129,11 +144,16 @@ def video_download(body: DownloadRequest) -> DownloadResponse:
     media_url = (fmt.get("url") or "").strip()
     headers = {str(k): str(v) for k, v in (fmt.get("http_headers") or {}).items()}
 
-    merge_audio = needs_merge(fmt)
+    merge_audio = needs_merge(fmt) if not body.stream_kind else merge_audio
 
     if mode == "server":
         return _server_download(
-            url, body.format_id, fallback=False, reason=reason, merge_audio=merge_audio
+            url,
+            body.format_id,
+            fallback=False,
+            reason=reason,
+            merge_audio=merge_audio,
+            cached_info=info,
         )
 
     if mode == "redirect" and media_url:
@@ -155,6 +175,7 @@ def video_download(body: DownloadRequest) -> DownloadResponse:
                 fallback=True,
                 reason="直链签发失败，已回退服务端下载",
                 merge_audio=merge_audio,
+                cached_info=info,
             )
 
     return _server_download(
@@ -163,6 +184,7 @@ def video_download(body: DownloadRequest) -> DownloadResponse:
         fallback=True,
         reason="直链不可用，已回退服务端下载",
         merge_audio=merge_audio,
+        cached_info=info,
     )
 
 

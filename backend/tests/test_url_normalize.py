@@ -4,10 +4,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from services.url_normalize import extract_video_url
+from services.url_normalize import extract_video_url, is_douyin_url
 
 
 class UrlNormalizeTests(unittest.TestCase):
+    def test_is_douyin_only_douyin_hosts(self):
+        self.assertTrue(is_douyin_url("https://www.douyin.com/video/1"))
+        self.assertTrue(is_douyin_url("https://v.douyin.com/abc/"))
+        self.assertFalse(is_douyin_url("https://www.bilibili.com/video/BV1xx"))
+        self.assertFalse(is_douyin_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ"))
+        self.assertFalse(is_douyin_url("https://www.youtube.com/watch?v=abc&ref=douyin.com"))
+
     def test_plain_url(self):
         url = "https://www.douyin.com/video/123"
         self.assertEqual(extract_video_url(url), url)

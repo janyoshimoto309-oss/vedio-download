@@ -37,6 +37,7 @@ class DownloadRequest(BaseModel):
     url: str = Field(..., min_length=8)
     format_id: str
     prefer_mode: PreferMode = "auto"
+    stream_kind: Optional[StreamKind] = None
 
 
 class DownloadResponse(BaseModel):

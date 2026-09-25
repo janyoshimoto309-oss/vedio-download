@@ -120,7 +120,7 @@ async function onParse() {
   }
 }
 
-async function onDownload({ format_id, prefer_mode }) {
+async function onDownload({ format_id, prefer_mode, stream_kind }) {
   error.value = ''
   downloading.value = true
   try {
@@ -128,6 +128,7 @@ async function onDownload({ format_id, prefer_mode }) {
       url: url.value.trim(),
       format_id,
       prefer_mode,
+      stream_kind,
     })
     const href = res.mode === 'redirect' ? res.redirect_url : res.download_url
     if (!href) throw new Error('未返回下载地址')
