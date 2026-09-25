@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.video import router as video_router
+from api.notes import router as notes_router
 from config import CORS_ORIGINS, DOWNLOADS_DIR
 from services.downloader import ffmpeg_available
 from services.task_store import cleanup_expired
@@ -26,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(video_router)
+app.include_router(notes_router)
 
 
 @app.get("/api/health")

@@ -2,6 +2,15 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
+
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(BASE_DIR / ".env")
+    load_dotenv(BASE_DIR.parent / ".env")
+except ImportError:
+    pass
+
 DOWNLOADS_DIR = BASE_DIR / "downloads"
 
 # Netscape cookies.txt；也可通过环境变量覆盖
@@ -38,3 +47,18 @@ CORS_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+# DeepSeek Chat Completions（官方 base_url 为 https://api.deepseek.com，可无 /v1）
+# https://api-docs.deepseek.com/  模型：deepseek-flash / deepseek-v4-pro
+OPENAI_API_KEY = (
+    (os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY") or "").strip()
+)
+OPENAI_BASE_URL = (
+    os.environ.get("OPENAI_BASE_URL")
+    or os.environ.get("DEEPSEEK_BASE_URL")
+    or "https://api.deepseek.com"
+).rstrip("/")
+OPENAI_MODEL = (os.environ.get("OPENAI_MODEL") or os.environ.get("DEEPSEEK_MODEL") or "deepseek-flash").strip()
+SUMMARIZE_MAX_CHARS = int(os.environ.get("SUMMARIZE_MAX_CHARS") or "48000")
+LLM_TIMEOUT_SECONDS = float(os.environ.get("LLM_TIMEOUT_SECONDS") or "180")
+LLM_MAX_TOKENS = int(os.environ.get("LLM_MAX_TOKENS") or "8192")

@@ -3,6 +3,10 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.*
+!.env.example
+backend/.env
+!backend/.env.example
 backend/downloads/
 backend/cookies.txt
 cookies.txt

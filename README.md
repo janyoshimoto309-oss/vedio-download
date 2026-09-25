@@ -1,6 +1,6 @@
 # vedio-download · 万能视频下载（学习项目）
 
-多平台视频链接解析与下载，核心能力基于 [yt-dlp](https://github.com/yt-dlp/yt-dlp)。**仅供学习研究，请尊重版权与平台服务条款。**
+多平台视频链接解析与下载。YouTube、B 站等走 [yt-dlp](https://github.com/yt-dlp/yt-dlp)；**抖音单独用无头浏览器**抓播放地址。**仅供学习研究，请尊重版权与平台服务条款。**
 
 ## 文档（扩展功能请先读）
 
@@ -8,19 +8,23 @@
 |------|------|
 | [docs/README.md](./docs/README.md) | 文档索引与给 AI 的阅读说明 |
 | [docs/01-需求分析.md](./docs/01-需求分析.md) | 需求、范围、已确认决策 |
-| [docs/02-技术方案.md](./docs/02-技术方案.md) | 架构、双下载模式、yt-dlp 集成 |
+| [docs/02-技术方案.md](./docs/02-技术方案.md) | 架构、双下载模式、平台分流 |
 | [docs/03-设计文档.md](./docs/03-设计文档.md) | UI、API 契约、组件清单 |
 | [docs/04-实现与产品差异.md](./docs/04-实现与产品差异.md) | 用户界面 vs 后端下载策略 |
+| [docs/05-视频下载功能总结.md](./docs/05-视频下载功能总结.md) | 已交付能力与踩坑（功能完成后优先读） |
+| [docs/06-AI视频学习笔记.md](./docs/06-AI视频学习笔记.md) | AI 学习笔记怎么配、怎么测 |
+| [docs/07-AI学习笔记细化方案.md](./docs/07-AI学习笔记细化方案.md) | 学习笔记第一期完整方案 |
 
 ## 项目状态
 
-**MVP 已实现**：前后端可本地运行，详见下方启动方式。
+**MVP 已实现**：前后端可本地运行，详见下方启动方式。抖音解析不依赖手动导出 Cookie（失败时仍可把 Netscape `cookies.txt` 放到 `backend/` 作 yt-dlp 回退）。
 
 ## 技术栈
 
 - 前端：Vue 3 + Vite + Tailwind CSS（端口 5173，`/api` 代理到后端）
-- 后端：Python 3.10+、FastAPI、yt-dlp（端口 8000）
+- 后端：Python 3.10+、FastAPI、yt-dlp、Playwright（仅抖音）、httpx（端口 8000）
 - 可选：ffmpeg（HLS/DASH 或音视频分离合并时需要）
+- 可选：`backend/.env` 的 `DEEPSEEK_API_KEY`（学习笔记，默认 `deepseek-flash`；见 `backend/.env.example` 与 https://api-docs.deepseek.com/ ）
 
 ## 本地运行
 
@@ -31,10 +35,13 @@ cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+python -m playwright install chromium
 python -m uvicorn main:app --reload --port 8000
 ```
 
-健康检查：<http://127.0.0.1:8000/api/health>
+健康检查：<http://127.0.0.1:8000/api/health>（`llm` 表示是否已配置大模型 Key）
+
+首次装 Playwright 会下载 Chromium，体积较大。必须用**装了依赖的同一个虚拟环境**启动 uvicorn，否则抖音解析会失败。
 
 ### 2. 前端（另开终端）
 
@@ -48,7 +55,7 @@ npm run dev
 
 ### 3. ffmpeg（推荐）
 
-未安装时，部分「视频+音频合并」清晰度无法服务端下载。
+未安装时，部分「视频+音频合并」清晰度无法服务端下载（B 站 / YouTube 高清常见）。
 
 ## 下载方式（用户 vs 技术）
 
@@ -64,13 +71,15 @@ cd backend
 python -m unittest discover -s tests -v
 ```
 
-联网可用公开视频链接在网页走通解析与下载；建议各测一条易直链与一条偏 YouTube/B 站的链接。
+联网建议各测：一条 YouTube、一条 B 站、一条抖音分享口令或 `/video/{id}`。学习笔记请用**带字幕**的 B 站/YouTube，并在 `backend/.env` 配置 `DEEPSEEK_API_KEY`（不要写进 `.env.example`）。
 
-## 抖音解析
+## 平台分流
 
-抖音网页接口需要新鲜访客 Cookie（不必登录）。任选其一：
+| 平台 | 解析 | 下载 |
+|------|------|------|
+| YouTube / B 站等 | yt-dlp（不带抖音 Cookie） | yt-dlp；高清常为音视频分离，需 ffmpeg |
+| 抖音 | Playwright 打开页面，按作品 id / 主播放器取直链 | httpx 拉 CDN；失败再回退 yt-dlp + 可选 `cookies.txt` |
 
-1. 用浏览器打开目标视频并过完验证码，导出 Netscape 格式 Cookie 为 `backend/cookies.txt`
-2. 启动后端前设置 `YTDLP_COOKIES_FROM_BROWSER=chrome`（Chrome 正在运行时可能读失败）
+输入框可粘贴分享口令；后端会抽出链接，并把用户主页 `modal_id` 改写成 `/video/{id}`。不要贴推荐首页（没有作品 id）。
 
-分享口令可直接粘贴，后端会抽出其中的 `v.douyin.com` 链接。
+`backend/cookies.txt`、`backend/downloads/` 已在 `.gitignore`，不要提交。
