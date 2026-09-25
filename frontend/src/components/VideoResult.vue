@@ -61,10 +61,10 @@ function formatSize(n) {
 
 function streamLabel(f) {
   if (f.stream_kind === 'muxed') return '含声音'
-  if (f.stream_kind === 'merge') return '含声音（自动合成）'
+  if (f.stream_kind === 'merge') return '视频+音频合并'
   if (f.stream_kind === 'audio') return '仅音频'
   if (f.vcodec && f.acodec) return '含声音'
-  if (f.vcodec) return '含声音（自动合成）'
+  if (f.vcodec) return '视频+音频合并'
   if (f.acodec) return '仅音频'
   return ''
 }
@@ -95,7 +95,7 @@ onUnmounted(() => document.removeEventListener('click', onDocClick))
 </script>
 
 <template>
-  <section class="mx-auto mt-8 w-full max-w-search overflow-hidden rounded-2xl border border-line bg-raised">
+  <section class="mx-auto mt-8 w-full max-w-search rounded-2xl border border-line bg-raised">
     <div class="flex flex-col gap-5 p-5 md:flex-row md:p-5">
       <img
         v-if="info.thumbnail"
@@ -128,13 +128,19 @@ onUnmounted(() => document.removeEventListener('click', onDocClick))
             <span class="block text-sm font-medium text-ink">{{ selected?.resolution || '选择清晰度' }}</span>
             <span v-if="selected" class="mt-0.5 block text-xs text-muted">{{ optionMeta(selected) }}</span>
           </span>
-          <svg class="h-4 w-4 shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            class="h-4 w-4 shrink-0 text-muted transition-transform"
+            :class="open ? 'rotate-180' : ''"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
         <ul
           v-if="open"
-          class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-line bg-raised py-1 shadow-lg"
+          class="absolute bottom-full left-0 z-20 mb-1 max-h-60 w-full overflow-auto rounded-xl border border-line bg-raised py-1 shadow-lg"
         >
           <li v-for="f in info.formats" :key="f.format_id">
             <button

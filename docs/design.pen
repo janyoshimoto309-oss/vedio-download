@@ -1,0 +1,5537 @@
+{
+  "version": "2.19",
+  "children": [
+    {
+      "type": "frame",
+      "id": "E07v1",
+      "x": 0,
+      "y": 980,
+      "name": "Desktop · 首屏吸引",
+      "clip": true,
+      "width": 1440,
+      "height": 980,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "bNFmB",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "oWnUz",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AQpGs",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "XnZMo",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "I02IbY",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Htw1H",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 420,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "UjeGl",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "TdVw8",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "lao3g",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "jjk7l",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "HOBcz",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "看见喜欢的，就收进手机。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 52,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "l7tba",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "把公开视频链接变成你能保存的文件。不用注册，手机也能用。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "g6C29q",
+                  "name": "Search bar",
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "kXjmn",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mLBOK",
+                      "name": "Placeholder",
+                      "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "粘贴 YouTube / B站 / 抖音 等视频链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wBt8G",
+                      "name": "Start button",
+                      "context": "navigate:IMePG",
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "S1sggA",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "开始",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "XZ5zO",
+                  "name": "Trust row",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "L0siR",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "dKdu2",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "fwZZp",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "KVGMI",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "wWkLd",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "o7L3ZG",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "jk7uT",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "XzqdG",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DfghD",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WPPI0",
+          "name": "How it works",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "PnQha",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "h20btm",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "LbwHu",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ba7xi",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cs5ut",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mFYW2",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "KnXSS",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "jjVLH",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SMfd0",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Aj0oh",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "WNp9z",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "wkLH3",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "lxS7A",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Clchn",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "OyCMB",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RyyZr",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "g8ELbP",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "IMePG",
+      "x": 1520,
+      "y": 980,
+      "name": "Desktop · 正在识别",
+      "clip": true,
+      "width": 1440,
+      "height": 720,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "pEIpj",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "XY1Fn",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "t6xokJ",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "IBHaK",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "DTS0x",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UGWSQ",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 560,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "DVleV",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "C3pq0x",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "BPA1u",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "TlZ2Q",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "W22FbY",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "看见喜欢的，就收进手机。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 52,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "gkXO8",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "把公开视频链接变成你能保存的文件。不用注册，手机也能用。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "O9t13n",
+                  "name": "Search bar",
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "V4o61",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "FJhEM",
+                      "name": "Placeholder",
+                      "fill": "$ink",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "https://www.bilibili.com/video/BV1xx411c7mD",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "fDrns",
+                      "name": "Start button",
+                      "opacity": 0.72,
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "IWWJK",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "正在识别…",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RP33W",
+                  "x": 331,
+                  "y": 254,
+                  "name": "Trust row",
+                  "enabled": false,
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "XV5gb",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "T7ZSpg",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cJzxh",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lYgKN",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "A8FjV",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "etOd3",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "FIfw8",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "dqzeR",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bfdDf",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "eqL71",
+                  "name": "Skeleton card",
+                  "clip": true,
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "RCTbX",
+                      "name": "Skel media",
+                      "width": "fill_container",
+                      "gap": 16,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "cornerRadius": 10,
+                          "id": "u8zYTW",
+                          "name": "Skel thumb",
+                          "fill": "$skeleton",
+                          "width": 200,
+                          "height": 112
+                        },
+                        {
+                          "type": "frame",
+                          "id": "J2lPVo",
+                          "name": "Skel texts",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "justifyContent": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 9,
+                              "id": "Y3I5GJ",
+                              "name": "Skel tag",
+                              "fill": "$skeleton",
+                              "width": 72,
+                              "height": 18
+                            },
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 6,
+                              "id": "kcU4J",
+                              "name": "Skel title1",
+                              "fill": "$skeleton",
+                              "width": "fill_container",
+                              "height": 16
+                            },
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 6,
+                              "id": "qVPLa",
+                              "name": "Skel title2",
+                              "fill": "$skeleton",
+                              "width": 240,
+                              "height": 16
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "N2cFt",
+                      "name": "Skel actions",
+                      "width": "fill_container",
+                      "stroke": "$border",
+                      "strokeWidth": {
+                        "top": 1
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        16,
+                        20,
+                        20,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "cornerRadius": 12,
+                          "id": "gzgNq",
+                          "name": "Skel select",
+                          "fill": "$skeleton",
+                          "width": "fill_container",
+                          "height": 44
+                        },
+                        {
+                          "type": "rectangle",
+                          "cornerRadius": 12,
+                          "id": "CDUGA",
+                          "name": "Skel btn",
+                          "fill": "$skeleton",
+                          "width": "fill_container",
+                          "height": 48
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "VzfZy",
+          "x": 0,
+          "y": 484,
+          "name": "How it works",
+          "enabled": false,
+          "width": "fill_container(1440)",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "rQX9Z",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "n2ECy",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "HMI1o",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "rVfu9",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jiIl7",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZgFLb",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xRZ6C",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "yI095",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "hhwHw",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "KYjEr",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "B9IjyK",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gWKrV",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "QI2ps",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "s0q3so",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hkqWJ",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Q9y6tD",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "G3Ci1b",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "v9FFF",
+      "x": 3040,
+      "y": 980,
+      "name": "Desktop · 确认下载",
+      "clip": true,
+      "width": 1440,
+      "height": 780,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "k2Jin0",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "D5kyX",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "E0R1pi",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "e2wrog",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "WBVFZ",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "faU3C",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 620,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "Y0iAu",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "xBsYH",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "VHA6G",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Rm6OM",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "zYdrV",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "确认一下，再保存。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 28,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "B4uKwo",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "封面和标题对上了，就可以选清晰度下载。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "SbxJM",
+                  "x": 120,
+                  "y": 144,
+                  "name": "Search bar",
+                  "enabled": false,
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "f5mwhB",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jYl5n",
+                      "name": "Placeholder",
+                      "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "粘贴 YouTube / B站 / 抖音 等视频链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "YULL5",
+                      "name": "Start button",
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rHdht",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "开始",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gM4s7",
+                  "x": 331,
+                  "y": 226,
+                  "name": "Trust row",
+                  "enabled": false,
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ZOc8k",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "QvSlR",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "QRuDU",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "y80aUV",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "RmLEQ",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "I73Rp",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Lptfz",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "pJTvI",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "c2QJT",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "t2wURU",
+                  "name": "Compact search",
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$accent",
+                  "strokeWidth": 1,
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "QiNj5",
+                      "name": "Recognized",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "isT9r",
+                          "name": "Check",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "circle-check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mI8Sf",
+                          "name": "Status",
+                          "fill": "$ink",
+                          "content": "已识别",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "d3JR2w",
+                          "name": "Url snippet",
+                          "fill": "$muted",
+                          "content": "bilibili.com/video/BV1xx…",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "atUcI",
+                      "name": "Change link",
+                      "fill": "$accent",
+                      "content": "更换链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "obfNX",
+                  "name": "Result card",
+                  "clip": true,
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB14",
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ybSYA",
+                      "name": "Media row",
+                      "width": "fill_container",
+                      "gap": 20,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "IhRMd",
+                          "name": "Thumbnail",
+                          "clip": true,
+                          "width": 240,
+                          "height": 135,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1629317422263-9317e911014a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTAzMTAxMzV8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          },
+                          "cornerRadius": 10
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ZPIQD",
+                          "name": "Meta",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "r0M8EN",
+                              "name": "Meta chips",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "r7p3zu",
+                                  "name": "Platform tag",
+                                  "fill": "$accent-soft",
+                                  "cornerRadius": 999,
+                                  "padding": [
+                                    4,
+                                    10
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "tmobq",
+                                      "name": "Platform",
+                                      "fill": "$accent",
+                                      "content": "B 站",
+                                      "fontFamily": "$font-body",
+                                      "fontSize": 12,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "v20uPb",
+                                  "name": "Duration",
+                                  "fill": "$muted",
+                                  "content": "12:34",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "VT49U",
+                              "name": "Video title",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "【教程】十分钟学会剪辑：从导入到导出的完整流程",
+                              "lineHeight": 1.35,
+                              "fontFamily": "$font-body",
+                              "fontSize": 18,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "r4jTOF",
+                      "name": "Actions",
+                      "width": "fill_container",
+                      "stroke": "$border",
+                      "strokeWidth": {
+                        "top": 1
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": [
+                        16,
+                        20,
+                        20,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cvYcx",
+                          "name": "Quality label",
+                          "fill": "$ink",
+                          "content": "清晰度",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "OwttU",
+                          "name": "Quality select",
+                          "width": "fill_container",
+                          "fill": "$surface",
+                          "cornerRadius": 12,
+                          "stroke": "$border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            12,
+                            14
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "wXnPC",
+                              "name": "Selected quality",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "y1A65J",
+                                  "name": "Res",
+                                  "fill": "$ink",
+                                  "content": "1080p",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "c7ucIg",
+                                  "name": "Res meta",
+                                  "fill": "$muted",
+                                  "content": "约 48 MB · 含声音（自动合成）",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "Ehg1S",
+                              "name": "Chevron",
+                              "width": 18,
+                              "height": 18,
+                              "icon": "chevron-down",
+                              "library": "lucide",
+                              "fill": "$muted"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ILFdO",
+                          "name": "Download button",
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$accent",
+                          "cornerRadius": 12,
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "Z7qdy",
+                              "name": "Dl icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "download",
+                              "library": "lucide",
+                              "fill": "#FFFFFF"
+                            },
+                            {
+                              "type": "text",
+                              "id": "UleEP",
+                              "name": "Dl label",
+                              "fill": "#FFFFFF",
+                              "content": "开始下载",
+                              "fontFamily": "$font-body",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qimOL",
+          "x": 0,
+          "y": 484,
+          "name": "How it works",
+          "enabled": false,
+          "width": "fill_container(1440)",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "lToYv",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "x2dIN",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "r0qg4p",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "n51OJ",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Kpiv9",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Ysnbh",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "x6qZTi",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kbqPv",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PDAM4",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "X18eDx",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "difUL",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qAVxo",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "iuodM",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "eZJTZ",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CbYGI",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kL23U",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "jKicd",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "r2VIKA",
+      "x": 4560,
+      "y": 980,
+      "name": "Desktop · 正在准备下载",
+      "clip": true,
+      "width": 1440,
+      "height": 780,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "EM2n1",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Y84nqy",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "l9hT7g",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "t3ELtU",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "m6d7b",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "gVQUt",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 620,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "D1uhWi",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "VGi3U",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "wswEP",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NMkwE",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "PGKT9",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "正在把文件准备好。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 28,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "KssTw",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "高清画面会自动配上声音，稍等片刻即可保存。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "X9UWY",
+                  "x": 120,
+                  "y": 144,
+                  "name": "Search bar",
+                  "enabled": false,
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "AO84K",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "r6fArD",
+                      "name": "Placeholder",
+                      "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "粘贴 YouTube / B站 / 抖音 等视频链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "B0nBC",
+                      "name": "Start button",
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "FqLP2",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "开始",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "y7kaJ",
+                  "x": 331,
+                  "y": 226,
+                  "name": "Trust row",
+                  "enabled": false,
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "EU1nM",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "xZrmy",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "PxT2M",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "O2HQeh",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "oBeXW",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Fhfq2",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wuf2r",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "a9aOa",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "NFcgl",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IrFh6",
+                  "name": "Compact search",
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$accent",
+                  "strokeWidth": 1,
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "T55un",
+                      "name": "Recognized",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "py4T5",
+                          "name": "Check",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "circle-check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "M8RTA",
+                          "name": "Status",
+                          "fill": "$ink",
+                          "content": "已识别",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "vhwC9",
+                          "name": "Url snippet",
+                          "fill": "$muted",
+                          "content": "bilibili.com/video/BV1xx…",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "d6IPr",
+                      "name": "Change link",
+                      "fill": "$accent",
+                      "content": "更换链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CQAj0",
+                  "name": "Result card",
+                  "clip": true,
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB14",
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "np5XT",
+                      "name": "Media row",
+                      "width": "fill_container",
+                      "gap": 20,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kKzPb",
+                          "name": "Thumbnail",
+                          "clip": true,
+                          "width": 240,
+                          "height": 135,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1629317422263-9317e911014a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTAzMTAxMzV8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          },
+                          "cornerRadius": 10
+                        },
+                        {
+                          "type": "frame",
+                          "id": "RGzse",
+                          "name": "Meta",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "m2M1Op",
+                              "name": "Meta chips",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "MBexT",
+                                  "name": "Platform tag",
+                                  "fill": "$accent-soft",
+                                  "cornerRadius": 999,
+                                  "padding": [
+                                    4,
+                                    10
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "MmeM1",
+                                      "name": "Platform",
+                                      "fill": "$accent",
+                                      "content": "B 站",
+                                      "fontFamily": "$font-body",
+                                      "fontSize": 12,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "jhk1g",
+                                  "name": "Duration",
+                                  "fill": "$muted",
+                                  "content": "12:34",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "b3F64n",
+                              "name": "Video title",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "【教程】十分钟学会剪辑：从导入到导出的完整流程",
+                              "lineHeight": 1.35,
+                              "fontFamily": "$font-body",
+                              "fontSize": 18,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OpLXI",
+                      "name": "Actions",
+                      "width": "fill_container",
+                      "stroke": "$border",
+                      "strokeWidth": {
+                        "top": 1
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": [
+                        16,
+                        20,
+                        20,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xy5Kw",
+                          "name": "Quality label",
+                          "fill": "$ink",
+                          "content": "清晰度",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "glYUM",
+                          "name": "Quality select",
+                          "opacity": 0.55,
+                          "width": "fill_container",
+                          "fill": "$surface",
+                          "cornerRadius": 12,
+                          "stroke": "$border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            12,
+                            14
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "Sv5oQ",
+                              "name": "Selected quality",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "yPABj",
+                                  "name": "Res",
+                                  "fill": "$ink",
+                                  "content": "1080p",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "wACAF",
+                                  "name": "Res meta",
+                                  "fill": "$muted",
+                                  "content": "约 48 MB · 含声音（自动合成）",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "a3MFmg",
+                              "name": "Chevron",
+                              "width": 18,
+                              "height": 18,
+                              "icon": "chevron-down",
+                              "library": "lucide",
+                              "fill": "$muted"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "R8mEH8",
+                          "name": "Download button",
+                          "opacity": 0.72,
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$accent",
+                          "cornerRadius": 12,
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "MAgEL",
+                              "name": "Dl icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "download",
+                              "library": "lucide",
+                              "fill": "#FFFFFF"
+                            },
+                            {
+                              "type": "text",
+                              "id": "IP9sr",
+                              "name": "Dl label",
+                              "fill": "#FFFFFF",
+                              "content": "正在准备下载…",
+                              "fontFamily": "$font-body",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UrfQW",
+          "x": 0,
+          "y": 484,
+          "name": "How it works",
+          "enabled": false,
+          "width": "fill_container(1440)",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "i0Ihwr",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "EsW8w",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "gwDo0",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "F8hv9i",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NuJtr",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qo64x",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Pg5OI",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ye0aZ",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yq10D",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "UTaJq",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ei7tr",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "g20N3",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "he4TJ",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xvCAD",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZskbS",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UUYb1",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "lCUTM",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kI7W5",
+      "x": 1520,
+      "y": 1780,
+      "name": "Desktop · 链接无效",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "Get3q",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Won8H",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "FI9fg",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "S6n5X",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "FXEQL",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "xkC0G",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 500,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "L7zXJ",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "DB3ED",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "T13ITV",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kxE8W",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "Rd5GM",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "这条链接还没法保存。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 52,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "vfHKS",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "换一条公开视频链接再试。不用注册，贴对就能开始。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "RwRrD",
+                  "name": "Search bar",
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "MX46m",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "R83ii",
+                      "name": "Placeholder",
+                      "fill": "$ink",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "https://example.com/not-a-video",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OK0wj",
+                      "name": "Start button",
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "H6Y1K",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "开始",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SguXT",
+                  "name": "Trust row",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Py9vX",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "XOSTS",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jjUHM",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mIkDI",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "Y7Dsq",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "YqZw6",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mDNxp",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "Ke8mP",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Bnb7P",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xN58p",
+                  "name": "Error alert",
+                  "width": 720,
+                  "fill": "$danger-bg",
+                  "cornerRadius": 14,
+                  "stroke": "$danger-border",
+                  "strokeWidth": 1,
+                  "gap": 12,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "TFC6c",
+                      "name": "Error icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "circle-alert",
+                      "library": "lucide",
+                      "fill": "$danger"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "FYwiK",
+                      "name": "Error copy",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wVTf6",
+                          "name": "Error title",
+                          "fill": "$danger",
+                          "content": "无法识别这个链接",
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "GrDjv",
+                          "name": "Error detail",
+                          "fill": "$ink",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "请确认是公开可访问的视频页，而不是首页、合集或需要登录的内容。",
+                          "lineHeight": 1.45,
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "w15xS",
+          "name": "How it works",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "i0eBhz",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "mtVB6",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "iw3cf",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "TVVMA",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "j11gl7",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "K6c1nk",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Ked8J",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "f9yktF",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ebYGv",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "MJCK2",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "TwFCt",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "vCSE1",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "gUV2p",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cfKPN",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "zs9s5",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ZnTst",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "CUy0h",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "adbJ3",
+      "x": 3040,
+      "y": 1780,
+      "name": "Desktop · 服务不可用",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "Sjkpw",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "q45wdt",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "C7nER",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "KE38j",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "aX0w6",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "TCp52",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 500,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "AfIXB",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "ijhk6",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "wj4qc",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "PLdG6",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "TxZOf",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "稍后再来，也能马上开始。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 52,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "q3zAn",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "服务暂时连不上。链接先留着，恢复后贴上就能保存。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "X8j7s",
+                  "name": "Search bar",
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "r9KIES",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Gwudo",
+                      "name": "Placeholder",
+                      "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "粘贴 YouTube / B站 / 抖音 等视频链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "NzZL0",
+                      "name": "Start button",
+                      "opacity": 0.45,
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "P0uuT",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "开始",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Fhwyf",
+                  "name": "Trust row",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "M678tj",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "wUbVX",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "rBprM",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "e0azrU",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "ATK0N",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "e4DBzc",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "BoKad",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "MBsch",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Oassu",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HA9eg",
+                  "name": "Warn alert",
+                  "width": 720,
+                  "fill": "$warn-bg",
+                  "cornerRadius": 14,
+                  "stroke": "$warn-border",
+                  "strokeWidth": 1,
+                  "gap": 12,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "X8IHyn",
+                      "name": "Warn icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "info",
+                      "library": "lucide",
+                      "fill": "$warn"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VeK96",
+                      "name": "Warn copy",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "naw5T",
+                          "name": "Warn title",
+                          "fill": "$warn",
+                          "content": "服务暂时不可用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "zrtF0",
+                          "name": "Warn detail",
+                          "fill": "$ink",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "请稍后再试。不需要注册，恢复后直接粘贴链接即可。",
+                          "lineHeight": 1.45,
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "r4zng",
+          "name": "How it works",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "i6aWcj",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "EYo3G",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "xzgMH",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "z8GKrM",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "a2Lfv",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "X9YWg",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "B6S0jl",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "TYiMz",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "R5k073",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wkQqV",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "icsL2",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "e81tkY",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bDsBx",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "BiHU7",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "AE7bJ",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "YkuNV",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "s2Loj",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "UDFaK",
+      "x": 6080,
+      "y": 980,
+      "name": "Desktop · 下载失败",
+      "clip": true,
+      "width": 1440,
+      "height": 780,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "CHuDf",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$raised",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            56
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "JYq6y",
+              "name": "Brand",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "gDFxI",
+                  "name": "Mark",
+                  "width": 30,
+                  "height": 30,
+                  "fill": "$accent",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "Aj5Au",
+                      "name": "Save icon",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "download",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "E9MMN",
+                  "name": "Site name",
+                  "fill": "$ink",
+                  "content": "万能视频下载",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ThGu8",
+          "name": "Hero wrap",
+          "clip": true,
+          "width": "fill_container",
+          "height": 620,
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "eMzoU",
+              "x": 460,
+              "y": -80,
+              "name": "Glow A",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#2563EB28",
+                    "position": 0
+                  },
+                  {
+                    "color": "#2563EB00",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 520,
+              "height": 520
+            },
+            {
+              "type": "ellipse",
+              "id": "tnhtp",
+              "x": 980,
+              "y": 220,
+              "name": "Glow B",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "radial",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "width": 1,
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#38BDF833",
+                    "position": 0
+                  },
+                  {
+                    "color": "#38BDF800",
+                    "position": 1
+                  }
+                ]
+              },
+              "width": 360,
+              "height": 360
+            },
+            {
+              "type": "frame",
+              "id": "iddl5",
+              "x": 240,
+              "y": 72,
+              "name": "Hero content",
+              "width": 960,
+              "layout": "vertical",
+              "gap": 22,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mYKDG",
+                  "name": "Eyebrow",
+                  "fill": "$accent",
+                  "content": "一条链接 · 立刻留下",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1.4
+                },
+                {
+                  "type": "text",
+                  "id": "d7ITl",
+                  "name": "Headline",
+                  "fill": "$ink",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "这次没保存成功。",
+                  "lineHeight": 1.15,
+                  "textAlign": "center",
+                  "fontFamily": "$font-display",
+                  "fontSize": 28,
+                  "fontWeight": "700",
+                  "letterSpacing": -1.2
+                },
+                {
+                  "type": "text",
+                  "id": "uCxrv",
+                  "name": "Subhead",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "换一个清晰度再试，或稍后再点开始下载。",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "Bz2xK",
+                  "x": 120,
+                  "y": 144,
+                  "name": "Search bar",
+                  "enabled": false,
+                  "width": 720,
+                  "height": 60,
+                  "fill": "$raised",
+                  "cornerRadius": 30,
+                  "stroke": "$accent",
+                  "strokeWidth": 1.5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB22",
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "blur": 32
+                  },
+                  "gap": 10,
+                  "padding": [
+                    6,
+                    6,
+                    6,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "B7MHQ",
+                      "name": "Link icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "link",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    },
+                    {
+                      "type": "text",
+                      "id": "QDOCM",
+                      "name": "Placeholder",
+                      "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "粘贴 YouTube / B站 / 抖音 等视频链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cGg4y",
+                      "name": "Start button",
+                      "height": "fill_container",
+                      "fill": "$accent",
+                      "cornerRadius": 24,
+                      "padding": [
+                        0,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "epjLk",
+                          "name": "Start label",
+                          "fill": "#FFFFFF",
+                          "content": "开始",
+                          "fontFamily": "$font-body",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ut5nw",
+                  "x": 331,
+                  "y": 226,
+                  "name": "Trust row",
+                  "enabled": false,
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "t0b66",
+                      "name": "无需登录",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "WJ0Qu",
+                          "name": "无需登录 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "A9Nvr",
+                          "name": "无需登录 label",
+                          "fill": "$muted",
+                          "content": "无需登录",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZcgME",
+                      "name": "多平台直达",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "ec5po",
+                          "name": "多平台直达 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MNwNv",
+                          "name": "多平台直达 label",
+                          "fill": "$muted",
+                          "content": "多平台直达",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ndbbu",
+                      "name": "手机同样好用",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "K7QHu",
+                          "name": "手机同样好用 icon",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "G8m5E",
+                          "name": "手机同样好用 label",
+                          "fill": "$muted",
+                          "content": "手机同样好用",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "D0evCW",
+                  "name": "Compact search",
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$accent",
+                  "strokeWidth": 1,
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OGePr",
+                      "name": "Recognized",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "YI81K",
+                          "name": "Check",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "circle-check",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "djCui",
+                          "name": "Status",
+                          "fill": "$ink",
+                          "content": "已识别",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "L6eHb",
+                          "name": "Url snippet",
+                          "fill": "$muted",
+                          "content": "bilibili.com/video/BV1xx…",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "TZZYv",
+                      "name": "Change link",
+                      "fill": "$accent",
+                      "content": "更换链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Dc986",
+                  "name": "Fail alert",
+                  "width": 720,
+                  "fill": "$danger-bg",
+                  "cornerRadius": 14,
+                  "stroke": "$danger-border",
+                  "strokeWidth": 1,
+                  "gap": 12,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "Z3olo",
+                      "name": "Fail icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "circle-alert",
+                      "library": "lucide",
+                      "fill": "$danger"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c1RuzO",
+                      "name": "Fail copy",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "qRY9h",
+                          "name": "Fail title",
+                          "fill": "$danger",
+                          "content": "下载失败",
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "pu5ST",
+                          "name": "Fail detail",
+                          "fill": "$ink",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "可以换一条清晰度，或过一会儿再试。视频信息还在，不用重新粘贴链接。",
+                          "lineHeight": 1.45,
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mf4cP",
+                  "name": "Result card",
+                  "clip": true,
+                  "width": 720,
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#2563EB14",
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "blur": 20
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Ri16d",
+                      "name": "Media row",
+                      "width": "fill_container",
+                      "gap": 20,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "YyA0W",
+                          "name": "Thumbnail",
+                          "clip": true,
+                          "width": 240,
+                          "height": 135,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1629317422263-9317e911014a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTAzMTAxMzV8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          },
+                          "cornerRadius": 10
+                        },
+                        {
+                          "type": "frame",
+                          "id": "yikmu",
+                          "name": "Meta",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "gZ41t",
+                              "name": "Meta chips",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "vqa8t",
+                                  "name": "Platform tag",
+                                  "fill": "$accent-soft",
+                                  "cornerRadius": 999,
+                                  "padding": [
+                                    4,
+                                    10
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "vK2zS",
+                                      "name": "Platform",
+                                      "fill": "$accent",
+                                      "content": "B 站",
+                                      "fontFamily": "$font-body",
+                                      "fontSize": 12,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "U8yIUd",
+                                  "name": "Duration",
+                                  "fill": "$muted",
+                                  "content": "12:34",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "m4QHnc",
+                              "name": "Video title",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "【教程】十分钟学会剪辑：从导入到导出的完整流程",
+                              "lineHeight": 1.35,
+                              "fontFamily": "$font-body",
+                              "fontSize": 18,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "n4g7J",
+                      "name": "Actions",
+                      "width": "fill_container",
+                      "stroke": "$border",
+                      "strokeWidth": {
+                        "top": 1
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": [
+                        16,
+                        20,
+                        20,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "I1zuB",
+                          "name": "Quality label",
+                          "fill": "$ink",
+                          "content": "清晰度",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "l60joP",
+                          "name": "Quality select",
+                          "width": "fill_container",
+                          "fill": "$surface",
+                          "cornerRadius": 12,
+                          "stroke": "$border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            12,
+                            14
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "f4OOm",
+                              "name": "Selected quality",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "B88pL",
+                                  "name": "Res",
+                                  "fill": "$ink",
+                                  "content": "1080p",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "gZL2f",
+                                  "name": "Res meta",
+                                  "fill": "$muted",
+                                  "content": "约 48 MB · 含声音（自动合成）",
+                                  "fontFamily": "$font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "OLehm",
+                              "name": "Chevron",
+                              "width": 18,
+                              "height": 18,
+                              "icon": "chevron-down",
+                              "library": "lucide",
+                              "fill": "$muted"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "K0JDlK",
+                          "name": "Download button",
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$accent",
+                          "cornerRadius": 12,
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "jJEti",
+                              "name": "Dl icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "download",
+                              "library": "lucide",
+                              "fill": "#FFFFFF"
+                            },
+                            {
+                              "type": "text",
+                              "id": "YrNRw",
+                              "name": "Dl label",
+                              "fill": "#FFFFFF",
+                              "content": "开始下载",
+                              "fontFamily": "$font-body",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "l4CMJJ",
+          "x": 0,
+          "y": 484,
+          "name": "How it works",
+          "enabled": false,
+          "width": "fill_container(1440)",
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            8,
+            240,
+            40,
+            240
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "n0ar4I",
+              "name": "Steps kicker",
+              "fill": "$accent",
+              "content": "三步完成，不用下载任何 App",
+              "fontFamily": "$font-body",
+              "fontSize": 13,
+              "fontWeight": "500",
+              "letterSpacing": 0.8
+            },
+            {
+              "type": "text",
+              "id": "BCjog",
+              "name": "Steps title",
+              "fill": "$ink",
+              "content": "像复制一段话一样简单。",
+              "fontFamily": "$font-display",
+              "fontSize": 28,
+              "fontWeight": "600",
+              "letterSpacing": -0.4
+            },
+            {
+              "type": "frame",
+              "id": "ureEn",
+              "name": "Step strip",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "auWQt",
+                  "name": "粘贴链接",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "DvwJe",
+                      "name": "01",
+                      "fill": "$accent",
+                      "content": "01",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fEBcT",
+                      "name": "粘贴链接 h",
+                      "fill": "$ink",
+                      "content": "粘贴链接",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qg5L4",
+                      "name": "粘贴链接 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": 275,
+                      "content": "从你正在看的页面拷贝网址链接，贴进来即可。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IGDV1",
+                  "name": "选清晰度",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "BNfE0",
+                      "name": "02",
+                      "fill": "$accent",
+                      "content": "02",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "oZWlr",
+                      "name": "选清晰度 h",
+                      "fill": "$ink",
+                      "content": "选清晰度",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "HUtEi",
+                      "name": "选清晰度 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "看到封面和标题再下。高清会自动带上声音。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SlHcr",
+                  "name": "保存文件",
+                  "width": "fill_container",
+                  "fill": "$raised",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": [
+                    24,
+                    22
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VlUXz",
+                      "name": "03",
+                      "fill": "$accent",
+                      "content": "03",
+                      "fontFamily": "$font-display",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "rqKCa",
+                      "name": "保存文件 h",
+                      "fill": "$ink",
+                      "content": "保存文件",
+                      "fontFamily": "$font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "D8njK",
+                      "name": "保存文件 p",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "一键下载到本机。完整视频，不是截图。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ss6oN",
+          "name": "Footer",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "$border",
+          "strokeWidth": {
+            "top": 1
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "t1qYHn",
+              "name": "Copyright",
+              "fill": "$muted",
+              "content": "请尊重版权与平台规则，仅供个人学习使用。",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "e4dDkG",
+      "x": 0,
+      "y": 960,
+      "name": "Prototype wires · visual",
+      "width": 7600,
+      "height": 1900,
+      "fill": "#00000000",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "EXa3h",
+          "x": 4450,
+          "y": 1360,
+          "name": "Wire 开始下载",
+          "width": 120,
+          "height": 40,
+          "layout": "none",
+          "children": [
+            {
+              "type": "path",
+              "id": "Bzwau",
+              "x": 0,
+              "y": 0,
+              "name": "Line",
+              "geometry": "M10 10l100 0",
+              "viewBox": [
+                0,
+                0,
+                120,
+                40
+              ],
+              "width": 120,
+              "height": 40,
+              "stroke": "#2563EB",
+              "strokeWidth": 2
+            },
+            {
+              "type": "text",
+              "id": "ng6KP",
+              "x": 20,
+              "y": -8,
+              "name": "Label",
+              "fill": "#2563EB",
+              "content": "开始下载",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "600"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "surface": {
+      "type": "color",
+      "value": "#F7F8FA"
+    },
+    "raised": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "ink": {
+      "type": "color",
+      "value": "#0F172A"
+    },
+    "muted": {
+      "type": "color",
+      "value": "#64748B"
+    },
+    "border": {
+      "type": "color",
+      "value": "#E2E8F0"
+    },
+    "accent": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "accent-soft": {
+      "type": "color",
+      "value": "#EFF6FF"
+    },
+    "danger": {
+      "type": "color",
+      "value": "#DC2626"
+    },
+    "danger-bg": {
+      "type": "color",
+      "value": "#FEF2F2"
+    },
+    "danger-border": {
+      "type": "color",
+      "value": "#FECACA"
+    },
+    "warn": {
+      "type": "color",
+      "value": "#B45309"
+    },
+    "warn-bg": {
+      "type": "color",
+      "value": "#FFFBEB"
+    },
+    "warn-border": {
+      "type": "color",
+      "value": "#FDE68A"
+    },
+    "skeleton": {
+      "type": "color",
+      "value": "#E8ECF1"
+    },
+    "font-display": {
+      "type": "string",
+      "value": "Geist"
+    },
+    "font-body": {
+      "type": "string",
+      "value": "Inter"
+    }
+  },
+  "fileToken": "2599ae7d-2b5d-40dd-b9fb-0553fc24ee66"
+}

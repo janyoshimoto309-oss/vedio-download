@@ -9,7 +9,12 @@
 | [docs/README.md](./docs/README.md) | 文档索引与给 AI 的阅读说明 |
 | [docs/01-需求分析.md](./docs/01-需求分析.md) | 需求、范围、已确认决策 |
 | [docs/02-技术方案.md](./docs/02-技术方案.md) | 架构、双下载模式、yt-dlp 集成 |
-| [docs/03-设计文档.md](./docs/03-设计文档.md) | UI、API 契约、模块与扩展点 |
+| [docs/03-设计文档.md](./docs/03-设计文档.md) | UI、API 契约、组件清单 |
+| [docs/04-实现与产品差异.md](./docs/04-实现与产品差异.md) | 用户界面 vs 后端下载策略 |
+
+## 项目状态
+
+**MVP 已实现**：前后端可本地运行，详见下方启动方式。
 
 ## 技术栈
 
@@ -39,28 +44,24 @@ npm install
 npm run dev
 ```
 
-浏览器打开 Vite 提示的地址（默认 <http://localhost:5173>）。
+浏览器打开 <http://localhost:5173>（Windows 上建议用 `localhost` 访问，以便 Vite 代理正常）。
 
 ### 3. ffmpeg（推荐）
 
-Windows 可将 ffmpeg 加入 PATH。未安装时，部分清晰度无法服务端合并，页面会提示。
+未安装时，部分「视频+音频合并」清晰度无法服务端下载。
 
-## 下载模式
+## 下载方式（用户 vs 技术）
 
-| mode | 行为 |
-|------|------|
-| `server` | yt-dlp 落盘到 `backend/downloads/`，再通过 `/api/video/file/{task_id}` 下载（约 1 小时过期） |
-| `redirect` | 返回直链，浏览器直接跳转 |
-| `proxy` | 服务端带 header 流式转发 `/api/video/proxy/{token}` |
+- **用户界面**：选清晰度 →「开始下载」；不展示 server/直链等选项。
+- **后端**：自动在 `server`（先落盘再发链接）、`redirect`、`proxy` 间选择；API 仍支持 `prefer_mode` 供调试。
+- 说明见 [docs/04-实现与产品差异.md](./docs/04-实现与产品差异.md)（含本地 server 模式可能短暂占两份磁盘）。
 
-解析结果会给出 `recommended_mode`；下载页可在高级选项里选 `auto` / `server` / `direct`。直链不可用时自动回退 `server`。
-
-## 冒烟测试
+## 测试
 
 ```powershell
 cd backend
 .\.venv\Scripts\Activate.ps1
-python -m unittest tests.test_strategy -v
+python -m unittest discover -s tests -v
 ```
 
-联网后可用公开短视频链接在网页完成解析与下载。建议各测一条「易直链」与一条「需服务端」的链接。
+联网可用公开视频链接在网页走通解析与下载；建议各测一条易直链与一条偏 YouTube/B 站的链接。
