@@ -97,6 +97,17 @@ def list_user_formats(info: dict[str, Any]) -> list[dict[str, Any]]:
         else:
             resolution = str(fmt.get("format_note") or fmt.get("resolution") or "unknown")
 
+        has_video = fmt.get("vcodec") not in (None, "none")
+        has_audio = fmt.get("acodec") not in (None, "none")
+        if has_video and has_audio:
+            stream_kind = "muxed"
+        elif has_video:
+            stream_kind = "merge"
+        elif has_audio:
+            stream_kind = "audio"
+        else:
+            continue
+
         seen.add(fid)
         result.append(
             {
@@ -107,9 +118,10 @@ def list_user_formats(info: dict[str, Any]) -> list[dict[str, Any]]:
                 "vcodec": None if fmt.get("vcodec") in (None, "none") else fmt.get("vcodec"),
                 "acodec": None if fmt.get("acodec") in (None, "none") else fmt.get("acodec"),
                 "protocol": fmt.get("protocol"),
+                "stream_kind": stream_kind,
                 "_sort_height": height or 0,
-                "_has_video": fmt.get("vcodec") not in (None, "none"),
-                "_has_audio": fmt.get("acodec") not in (None, "none"),
+                "_has_video": has_video,
+                "_has_audio": has_audio,
             }
         )
 

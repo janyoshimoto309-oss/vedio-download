@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 PreferMode = Literal["auto", "server", "direct"]
 DownloadMode = Literal["server", "redirect", "proxy"]
+StreamKind = Literal["muxed", "merge", "audio"]
 
 
 class VideoInfoRequest(BaseModel):
@@ -18,6 +19,7 @@ class FormatItem(BaseModel):
     vcodec: Optional[str] = None
     acodec: Optional[str] = None
     protocol: Optional[str] = None
+    stream_kind: StreamKind
 
 
 class VideoInfoResponse(BaseModel):

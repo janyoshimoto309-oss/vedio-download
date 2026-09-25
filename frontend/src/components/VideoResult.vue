@@ -9,8 +9,6 @@ const props = defineProps({
 const emit = defineEmits(['download'])
 
 const formatId = ref(props.info.formats?.[0]?.format_id || '')
-const preferMode = ref('auto')
-const showAdvanced = ref(false)
 
 const durationText = computed(() => {
   const d = props.info.duration
@@ -22,9 +20,24 @@ const durationText = computed(() => {
   return `${m}:${String(s).padStart(2, '0')}`
 })
 
-const modeLabel = computed(() => {
-  const map = { server: '服务端下载', redirect: '直链重定向', proxy: '代理下载' }
-  return map[props.info.recommended_mode] || props.info.recommended_mode
+const platformLabel = computed(() => {
+  const raw = String(props.info.extractor || '').trim()
+  const key = raw.toLowerCase()
+  if (key.includes('bili')) return 'B 站'
+  if (key.includes('youtube')) return 'YouTube'
+  if (key.includes('douyin')) return '抖音'
+  if (key.includes('tiktok')) return 'TikTok'
+  if (key.includes('kuaishou')) return '快手'
+  if (key.includes('xiaohongshu') || key === 'xhs') return '小红书'
+  if (key.includes('weibo')) return '微博'
+  if (key.includes('youku')) return '优酷'
+  if (key.includes('iqiyi') || key.includes('qiyi')) return '爱奇艺'
+  if (key.includes('tencent') || key.includes('qq')) return '腾讯视频'
+  if (key.includes('twitter') || key === 'x') return 'X'
+  if (key.includes('instagram')) return 'Instagram'
+  if (key.includes('facebook')) return 'Facebook'
+  if (key.includes('vimeo')) return 'Vimeo'
+  return raw || '未知来源'
 })
 
 function formatSize(n) {
@@ -34,8 +47,22 @@ function formatSize(n) {
   return `${Math.round(n / 1024)} KB`
 }
 
+const STREAM_LABELS = {
+  muxed: '· 音视频',
+  merge: '· 视频+音频合并',
+  audio: '· 仅音频',
+}
+
+function streamLabel(f) {
+  if (STREAM_LABELS[f.stream_kind]) return STREAM_LABELS[f.stream_kind]
+  if (f.vcodec && f.acodec) return STREAM_LABELS.muxed
+  if (f.vcodec) return STREAM_LABELS.merge
+  if (f.acodec) return STREAM_LABELS.audio
+  return ''
+}
+
 function submit() {
-  emit('download', { format_id: formatId.value, prefer_mode: preferMode.value })
+  emit('download', { format_id: formatId.value, prefer_mode: 'auto' })
 }
 </script>
 
@@ -50,15 +77,10 @@ function submit() {
       />
       <div class="min-w-0 flex-1">
         <div class="mb-2 flex flex-wrap items-center gap-2">
-          <span class="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-600">{{ info.extractor }}</span>
+          <span class="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-600">{{ platformLabel }}</span>
           <span class="text-xs text-slate-500">{{ durationText }}</span>
         </div>
         <h2 class="text-lg font-semibold leading-snug text-slate-900">{{ info.title }}</h2>
-        <p class="mt-3 text-sm text-slate-600">
-          本次推荐：
-          <span class="font-medium text-indigo-600">{{ modeLabel }}</span>
-          <span class="mt-1 block text-xs text-slate-400">{{ info.recommended_reason }}</span>
-        </p>
       </div>
     </div>
 
@@ -70,26 +92,10 @@ function submit() {
       >
         <option v-for="f in info.formats" :key="f.format_id" :value="f.format_id">
           {{ f.resolution }} · {{ f.ext }}
-          {{ f.vcodec && f.acodec ? '· 音视频' : f.vcodec ? '· 仅画面' : f.acodec ? '· 仅音频' : '' }}
+          {{ streamLabel(f) }}
           {{ formatSize(f.filesize) ? '· ' + formatSize(f.filesize) : '' }}
-          ({{ f.format_id }})
         </option>
       </select>
-
-      <button type="button" class="mt-3 text-xs text-indigo-600" @click="showAdvanced = !showAdvanced">
-        {{ showAdvanced ? '收起高级选项' : '高级：手动指定下载模式' }}
-      </button>
-      <div v-if="showAdvanced" class="mt-2 flex flex-wrap gap-3 text-sm">
-        <label class="flex items-center gap-1.5">
-          <input v-model="preferMode" type="radio" value="auto" /> 自动
-        </label>
-        <label class="flex items-center gap-1.5">
-          <input v-model="preferMode" type="radio" value="server" /> 强制服务端
-        </label>
-        <label class="flex items-center gap-1.5">
-          <input v-model="preferMode" type="radio" value="direct" /> 优先直链
-        </label>
-      </div>
 
       <button
         type="button"
