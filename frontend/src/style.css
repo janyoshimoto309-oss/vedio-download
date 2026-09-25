@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: Geist;
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@5.2.5/latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+
 html,
 body,
 #app {
@@ -9,5 +18,9 @@ body,
 }
 
 body {
-  @apply bg-slate-50 text-slate-800 antialiased;
+  @apply bg-surface font-body text-ink antialiased;
+}
+
+::selection {
+  background: #dbeafe;
 }

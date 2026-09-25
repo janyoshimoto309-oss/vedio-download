@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = defineProps({
   info: { type: Object, required: true },
@@ -8,11 +8,23 @@ const props = defineProps({
 
 const emit = defineEmits(['download'])
 
-const formatId = ref(props.info.formats?.[0]?.format_id || '')
+const formatId = ref('')
+const open = ref(false)
+const rootRef = ref(null)
+
+watch(
+  () => props.info,
+  (val) => {
+    formatId.value = val.formats?.[0]?.format_id || ''
+  },
+  { immediate: true },
+)
+
+const selected = computed(() => props.info.formats?.find((f) => f.format_id === formatId.value) || null)
 
 const durationText = computed(() => {
   const d = props.info.duration
-  if (!d) return '时长未知'
+  if (!d) return ''
   const s = Math.floor(d % 60)
   const m = Math.floor((d / 60) % 60)
   const h = Math.floor(d / 3600)
@@ -43,66 +55,115 @@ const platformLabel = computed(() => {
 function formatSize(n) {
   if (!n) return ''
   if (n > 1024 * 1024 * 1024) return `${(n / 1024 / 1024 / 1024).toFixed(1)} GB`
-  if (n > 1024 * 1024) return `${(n / 1024 / 1024).toFixed(1)} MB`
+  if (n > 1024 * 1024) return `${(n / 1024 / 1024).toFixed(0)} MB`
   return `${Math.round(n / 1024)} KB`
 }
 
-const STREAM_LABELS = {
-  muxed: '· 音视频',
-  merge: '· 视频+音频合并',
-  audio: '· 仅音频',
+function streamLabel(f) {
+  if (f.stream_kind === 'muxed') return '含声音'
+  if (f.stream_kind === 'merge') return '含声音（自动合成）'
+  if (f.stream_kind === 'audio') return '仅音频'
+  if (f.vcodec && f.acodec) return '含声音'
+  if (f.vcodec) return '含声音（自动合成）'
+  if (f.acodec) return '仅音频'
+  return ''
 }
 
-function streamLabel(f) {
-  if (STREAM_LABELS[f.stream_kind]) return STREAM_LABELS[f.stream_kind]
-  if (f.vcodec && f.acodec) return STREAM_LABELS.muxed
-  if (f.vcodec) return STREAM_LABELS.merge
-  if (f.acodec) return STREAM_LABELS.audio
-  return ''
+function optionMeta(f) {
+  const size = formatSize(f.filesize)
+  const kind = streamLabel(f)
+  if (size && kind) return `约 ${size} · ${kind}`
+  if (size) return `约 ${size}`
+  return kind
+}
+
+function pick(id) {
+  formatId.value = id
+  open.value = false
 }
 
 function submit() {
   emit('download', { format_id: formatId.value, prefer_mode: 'auto' })
 }
+
+function onDocClick(e) {
+  if (!rootRef.value?.contains(e.target)) open.value = false
+}
+
+onMounted(() => document.addEventListener('click', onDocClick))
+onUnmounted(() => document.removeEventListener('click', onDocClick))
 </script>
 
 <template>
-  <section class="mx-auto mt-10 w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-    <div class="flex flex-col gap-5 p-5 md:flex-row md:p-6">
+  <section class="mx-auto mt-8 w-full max-w-search overflow-hidden rounded-2xl border border-line bg-raised">
+    <div class="flex flex-col gap-5 p-5 md:flex-row md:p-5">
       <img
         v-if="info.thumbnail"
         :src="info.thumbnail"
         :alt="info.title"
-        class="h-40 w-full rounded-xl object-cover md:h-36 md:w-56"
+        class="h-36 w-full rounded-[10px] object-cover md:h-[112px] md:w-[200px] md:shrink-0"
+      />
+      <div
+        v-else
+        class="h-36 w-full rounded-[10px] bg-skeleton md:h-[112px] md:w-[200px] md:shrink-0"
       />
       <div class="min-w-0 flex-1">
         <div class="mb-2 flex flex-wrap items-center gap-2">
-          <span class="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-600">{{ platformLabel }}</span>
-          <span class="text-xs text-slate-500">{{ durationText }}</span>
+          <span class="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">{{ platformLabel }}</span>
+          <span v-if="durationText" class="text-xs text-muted">{{ durationText }}</span>
         </div>
-        <h2 class="text-lg font-semibold leading-snug text-slate-900">{{ info.title }}</h2>
+        <h2 class="text-[17px] font-semibold leading-snug text-ink">{{ info.title }}</h2>
       </div>
     </div>
 
-    <div class="border-t border-slate-100 px-5 py-5 md:px-6">
-      <label class="mb-2 block text-sm font-medium text-slate-700">选择清晰度</label>
-      <select
-        v-model="formatId"
-        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-indigo-400"
-      >
-        <option v-for="f in info.formats" :key="f.format_id" :value="f.format_id">
-          {{ f.resolution }} · {{ f.ext }}
-          {{ streamLabel(f) }}
-          {{ formatSize(f.filesize) ? '· ' + formatSize(f.filesize) : '' }}
-        </option>
-      </select>
+    <div class="space-y-3 px-5 pb-5">
+      <p class="text-sm font-medium text-ink">清晰度</p>
+      <div ref="rootRef" class="relative">
+        <button
+          type="button"
+          class="flex w-full items-center justify-between rounded-xl bg-surface px-3.5 py-3 text-left"
+          @click="open = !open"
+        >
+          <span class="min-w-0">
+            <span class="block text-sm font-medium text-ink">{{ selected?.resolution || '选择清晰度' }}</span>
+            <span v-if="selected" class="mt-0.5 block text-xs text-muted">{{ optionMeta(selected) }}</span>
+          </span>
+          <svg class="h-4 w-4 shrink-0 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <ul
+          v-if="open"
+          class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-line bg-raised py-1 shadow-lg"
+        >
+          <li v-for="f in info.formats" :key="f.format_id">
+            <button
+              type="button"
+              class="flex w-full flex-col px-3.5 py-2.5 text-left hover:bg-accent-soft"
+              :class="f.format_id === formatId ? 'bg-accent-soft' : ''"
+              @click="pick(f.format_id)"
+            >
+              <span class="text-sm font-medium text-ink">{{ f.resolution }}</span>
+              <span class="text-xs text-muted">{{ optionMeta(f) }}</span>
+            </button>
+          </li>
+        </ul>
+      </div>
 
       <button
         type="button"
         :disabled="downloading || !formatId"
-        class="mt-5 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        class="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent text-[15px] font-semibold text-white transition hover:bg-blue-700 disabled:opacity-70"
         @click="submit"
       >
+        <svg v-if="!downloading" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+          />
+        </svg>
         {{ downloading ? '正在准备下载…' : '开始下载' }}
       </button>
     </div>

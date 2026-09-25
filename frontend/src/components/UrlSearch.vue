@@ -7,6 +7,7 @@ defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'parse'])
+
 const inputRef = ref(null)
 
 function onSubmit() {
@@ -21,13 +22,17 @@ defineExpose({ focus })
 </script>
 
 <template>
-  <form class="mx-auto w-full max-w-3xl" @submit.prevent="onSubmit">
+  <form class="mx-auto w-full max-w-search" @submit.prevent="onSubmit">
     <div
-      class="flex items-center gap-2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm md:p-2"
+      class="flex h-[60px] items-center gap-2.5 rounded-[30px] border border-accent bg-raised pl-5 pr-1.5 shadow-search"
     >
-      <svg class="ml-3 h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-1 1a4 4 0 01-5.656-5.656l1.5-1.5" />
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.172 13.828a4 4 0 010-5.656l1-1a4 4 0 015.656 5.656l-1.5 1.5" />
+      <svg class="h-5 w-5 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13.828 10.172a4 4 0 010 5.656l-1 1a4 4 0 01-5.656-5.656l1.5-1.5M10.172 13.828a4 4 0 010-5.656l1-1a4 4 0 015.656 5.656l-1.5 1.5"
+        />
       </svg>
       <input
         ref="inputRef"
@@ -35,15 +40,15 @@ defineExpose({ focus })
         type="url"
         required
         placeholder="粘贴 YouTube / B站 / 抖音 等视频链接"
-        class="min-w-0 flex-1 bg-transparent px-1 py-2 text-base outline-none placeholder:text-slate-400"
+        class="min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-slate-400"
         @input="emit('update:modelValue', $event.target.value)"
       />
       <button
         type="submit"
         :disabled="loading"
-        class="shrink-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm disabled:opacity-60 md:px-7"
+        class="h-12 shrink-0 rounded-full bg-accent px-6 text-[15px] font-semibold text-white transition hover:bg-blue-700 disabled:opacity-70"
       >
-        {{ loading ? '解析中…' : '解析' }}
+        {{ loading ? '正在识别…' : '开始' }}
       </button>
     </div>
   </form>
