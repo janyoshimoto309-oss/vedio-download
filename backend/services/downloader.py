@@ -7,7 +7,10 @@ from typing import Any, Optional
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
+import httpx
+
 from config import COOKIES_FILE, COOKIES_FROM_BROWSER, DOWNLOADS_DIR, YTDLP_IMPERSONATE
+from services.douyin_browser import extract_douyin_in_browser
 from services.url_normalize import extract_video_url
 
 _COOKIE_HINT = (
@@ -73,6 +76,11 @@ def _rewrite_error(url: str, exc: BaseException) -> DownloadError:
 class VideoDownloader:
     def get_info(self, url: str) -> dict[str, Any]:
         url = extract_video_url(url)
+        if _is_douyin(url):
+            try:
+                return extract_douyin_in_browser(url)
+            except DownloadError:
+                pass
         ydl_opts = build_ydl_opts(url, skip_download=True)
         try:
             with YoutubeDL(ydl_opts) as ydl:
@@ -106,6 +114,11 @@ class VideoDownloader:
     def download(self, url: str, format_id: str, out_dir: Path, merge_audio: bool = False) -> Path:
         url = extract_video_url(url)
         out_dir.mkdir(parents=True, exist_ok=True)
+        if _is_douyin(url):
+            info = self.get_info(url)
+            fmt = self.get_format(info, format_id) or (info.get("formats") or [None])[0]
+            if fmt and (fmt.get("url") or "").startswith("http"):
+                return _download_direct(fmt, info.get("title") or "video", out_dir)
         fmt_spec = f"{format_id}+bestaudio/{format_id}" if merge_audio else format_id
         ydl_opts = build_ydl_opts(
             url,
@@ -122,6 +135,30 @@ class VideoDownloader:
             raise DownloadError("下载完成但未找到输出文件")
         files.sort(key=lambda p: p.stat().st_mtime, reverse=True)
         return files[0]
+
+
+def _safe_file_stem(name: str) -> str:
+    cleaned = "".join(c for c in name if c not in '\\/:*?"<>|').strip() or "video"
+    return cleaned[:80]
+
+
+def _download_direct(fmt: dict[str, Any], title: str, out_dir: Path) -> Path:
+    media = (fmt.get("url") or "").strip()
+    if not media:
+        raise DownloadError("没有可下载的直链")
+    headers = {str(k): str(v) for k, v in (fmt.get("http_headers") or {}).items()}
+    dest = out_dir / f"{_safe_file_stem(title)}.mp4"
+    with httpx.Client(timeout=httpx.Timeout(120.0, connect=20.0), follow_redirects=True) as client:
+        with client.stream("GET", media, headers=headers) as resp:
+            if resp.status_code >= 400:
+                raise DownloadError(f"拉取视频失败：HTTP {resp.status_code}")
+            with dest.open("wb") as fh:
+                for chunk in resp.iter_bytes(64 * 1024):
+                    fh.write(chunk)
+    if dest.stat().st_size < 1024:
+        dest.unlink(missing_ok=True)
+        raise DownloadError("下载文件过小，直链可能已失效")
+    return dest
 
 
 def list_user_formats(info: dict[str, Any]) -> list[dict[str, Any]]:

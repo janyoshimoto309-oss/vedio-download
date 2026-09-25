@@ -23,6 +23,7 @@ DIRECT_UNRELIABLE_EXTRACTORS = {
     "bilibiliie",
     "tiktok",
     "douyin",
+    "douyinbrowser",
 }
 
 FRAGMENT_PROTOCOLS = {
