@@ -21,6 +21,7 @@ from models.schemas import (
 from services import proxy_token, task_store
 from services.download_strategy import choose_mode, needs_merge
 from services.downloader import VideoDownloader, ffmpeg_available, list_user_formats
+from services.url_normalize import extract_video_url
 
 router = APIRouter(prefix="/api/video", tags=["video"])
 downloader = VideoDownloader()
@@ -48,7 +49,7 @@ def _pick_recommend_format(formats: list[dict], info: dict) -> dict | None:
 @router.post("/info", response_model=VideoInfoResponse)
 def video_info(body: VideoInfoRequest) -> VideoInfoResponse:
     try:
-        info = downloader.get_info(body.url)
+        info = downloader.get_info(extract_video_url(body.url))
     except DownloadError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
@@ -113,8 +114,9 @@ def _server_download(
 
 @router.post("/download", response_model=DownloadResponse)
 def video_download(body: DownloadRequest) -> DownloadResponse:
+    url = extract_video_url(body.url)
     try:
-        info = downloader.get_info(body.url)
+        info = downloader.get_info(url)
     except DownloadError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
@@ -131,7 +133,7 @@ def video_download(body: DownloadRequest) -> DownloadResponse:
 
     if mode == "server":
         return _server_download(
-            body.url, body.format_id, fallback=False, reason=reason, merge_audio=merge_audio
+            url, body.format_id, fallback=False, reason=reason, merge_audio=merge_audio
         )
 
     if mode == "redirect" and media_url:
@@ -148,7 +150,7 @@ def video_download(body: DownloadRequest) -> DownloadResponse:
             )
         except Exception:
             return _server_download(
-                body.url,
+                url,
                 body.format_id,
                 fallback=True,
                 reason="直链签发失败，已回退服务端下载",
@@ -156,7 +158,7 @@ def video_download(body: DownloadRequest) -> DownloadResponse:
             )
 
     return _server_download(
-        body.url,
+        url,
         body.format_id,
         fallback=True,
         reason="直链不可用，已回退服务端下载",

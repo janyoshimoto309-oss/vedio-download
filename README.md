@@ -65,3 +65,12 @@ python -m unittest discover -s tests -v
 ```
 
 联网可用公开视频链接在网页走通解析与下载；建议各测一条易直链与一条偏 YouTube/B 站的链接。
+
+## 抖音解析
+
+抖音网页接口需要新鲜访客 Cookie（不必登录）。任选其一：
+
+1. 用浏览器打开目标视频并过完验证码，导出 Netscape 格式 Cookie 为 `backend/cookies.txt`
+2. 启动后端前设置 `YTDLP_COOKIES_FROM_BROWSER=chrome`（Chrome 正在运行时可能读失败）
+
+分享口令可直接粘贴，后端会抽出其中的 `v.douyin.com` 链接。

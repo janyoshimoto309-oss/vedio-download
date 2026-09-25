@@ -37,9 +37,9 @@ defineExpose({ focus })
       <input
         ref="inputRef"
         :value="modelValue"
-        type="url"
+        type="text"
         required
-        placeholder="粘贴 YouTube / B站 / 抖音 等视频链接"
+        placeholder="粘贴 YouTube / B站 / 抖音链接，或抖音分享口令"
         class="min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-slate-400"
         @input="emit('update:modelValue', $event.target.value)"
       />

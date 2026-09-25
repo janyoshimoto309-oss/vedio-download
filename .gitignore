@@ -4,6 +4,8 @@ __pycache__/
 venv/
 .env
 backend/downloads/
+backend/cookies.txt
+cookies.txt
 *.log
 
 node_modules/

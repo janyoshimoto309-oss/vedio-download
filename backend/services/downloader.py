@@ -7,21 +7,73 @@ from typing import Any, Optional
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
-from config import DOWNLOADS_DIR
+from config import COOKIES_FILE, COOKIES_FROM_BROWSER, DOWNLOADS_DIR, YTDLP_IMPERSONATE
+from services.url_normalize import extract_video_url
+
+_COOKIE_HINT = (
+    "抖音需要新鲜访客 Cookie。请先在浏览器打开该视频（过完验证码即可，不必登录），"
+    "把 Netscape 格式的 cookies.txt 放到 backend/cookies.txt，"
+    "或设置环境变量 YTDLP_COOKIES_FROM_BROWSER=chrome 后重启后端再试。"
+)
 
 
 def ffmpeg_available() -> bool:
     return shutil.which("ffmpeg") is not None
 
 
+def _is_douyin(url: str) -> bool:
+    return "douyin.com" in url.lower()
+
+
+def _impersonate_target():
+    if not YTDLP_IMPERSONATE:
+        return None
+    try:
+        import curl_cffi  # noqa: F401
+        from yt_dlp.networking.impersonate import ImpersonateTarget
+
+        return ImpersonateTarget(YTDLP_IMPERSONATE)
+    except Exception:
+        return None
+
+
+def build_ydl_opts(url: str | None = None, **extra: Any) -> dict[str, Any]:
+    opts: dict[str, Any] = {
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+    }
+    if COOKIES_FILE.is_file() and COOKIES_FILE.stat().st_size > 0:
+        opts["cookiefile"] = str(COOKIES_FILE)
+    if COOKIES_FROM_BROWSER:
+        opts["cookiesfrombrowser"] = (COOKIES_FROM_BROWSER,)
+    if url and _is_douyin(url):
+        opts["http_headers"] = {
+            "Referer": "https://www.douyin.com/",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+        }
+        target = _impersonate_target()
+        if target is not None:
+            opts["impersonate"] = target
+    opts.update(extra)
+    return opts
+
+
+def _rewrite_error(url: str, exc: BaseException) -> DownloadError:
+    msg = str(exc)
+    if _is_douyin(url) and (
+        "Fresh cookies" in msg
+        or "Failed to parse JSON" in msg
+        or "s_v_web_id" in msg
+    ):
+        return DownloadError(_COOKIE_HINT)
+    return exc if isinstance(exc, DownloadError) else DownloadError(msg)
+
+
 class VideoDownloader:
     def get_info(self, url: str) -> dict[str, Any]:
-        ydl_opts = {
-            "quiet": True,
-            "no_warnings": True,
-            "skip_download": True,
-            "noplaylist": True,
-        }
+        url = extract_video_url(url)
+        ydl_opts = build_ydl_opts(url, skip_download=True)
         try:
             with YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(url, download=False)
@@ -34,10 +86,10 @@ class VideoDownloader:
                         raise DownloadError("播放列表为空，请粘贴单条视频链接")
                     info = first
                 return ydl.sanitize_info(info)
-        except DownloadError:
-            raise
+        except DownloadError as exc:
+            raise _rewrite_error(url, exc) from exc
         except Exception as exc:
-            raise DownloadError(str(exc)) from exc
+            raise _rewrite_error(url, exc) from exc
 
     def get_format(self, info: dict[str, Any], format_id: str) -> Optional[dict[str, Any]]:
         for item in info.get("formats") or []:
@@ -52,17 +104,16 @@ class VideoDownloader:
         return None
 
     def download(self, url: str, format_id: str, out_dir: Path, merge_audio: bool = False) -> Path:
+        url = extract_video_url(url)
         out_dir.mkdir(parents=True, exist_ok=True)
         fmt_spec = f"{format_id}+bestaudio/{format_id}" if merge_audio else format_id
-        ydl_opts = {
-            "quiet": True,
-            "no_warnings": True,
-            "noplaylist": True,
-            "format": fmt_spec,
-            "outtmpl": str(out_dir / "%(title).80s.%(ext)s"),
-            "merge_output_format": "mp4",
-            "restrictfilenames": False,
-        }
+        ydl_opts = build_ydl_opts(
+            url,
+            format=fmt_spec,
+            outtmpl=str(out_dir / "%(title).80s.%(ext)s"),
+            merge_output_format="mp4",
+            restrictfilenames=False,
+        )
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
