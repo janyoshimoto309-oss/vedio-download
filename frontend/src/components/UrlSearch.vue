@@ -1,14 +1,23 @@
 <script setup>
+import { ref } from 'vue'
+
 defineProps({
   modelValue: { type: String, default: '' },
   loading: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:modelValue', 'parse'])
+const inputRef = ref(null)
 
 function onSubmit() {
   emit('parse')
 }
+
+function focus() {
+  inputRef.value?.focus()
+}
+
+defineExpose({ focus })
 </script>
 
 <template>
@@ -21,6 +30,7 @@ function onSubmit() {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.172 13.828a4 4 0 010-5.656l1-1a4 4 0 015.656 5.656l-1.5 1.5" />
       </svg>
       <input
+        ref="inputRef"
         :value="modelValue"
         type="url"
         required

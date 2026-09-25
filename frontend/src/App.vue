@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import UrlSearch from './components/UrlSearch.vue'
 import VideoResult from './components/VideoResult.vue'
 import { downloadVideo, fetchHealth, fetchVideoInfo } from './api/video'
@@ -10,6 +10,17 @@ const downloading = ref(false)
 const info = ref(null)
 const error = ref('')
 const notice = ref('')
+const searchRef = ref(null)
+
+const urlSnippet = computed(() => {
+  try {
+    const host = new URL(url.value.trim()).hostname.replace(/^www\./, '')
+    return host.length > 28 ? `${host.slice(0, 26)}…` : host
+  } catch {
+    const raw = url.value.trim()
+    return raw.length > 28 ? `${raw.slice(0, 26)}…` : raw
+  }
+})
 
 onMounted(async () => {
   try {
@@ -51,6 +62,16 @@ async function onDownload({ format_id, prefer_mode }) {
     downloading.value = false
   }
 }
+
+async function onChangeLink() {
+  url.value = ''
+  info.value = null
+  error.value = ''
+  notice.value = ''
+  downloading.value = false
+  await nextTick()
+  searchRef.value?.focus()
+}
 </script>
 
 <template>
@@ -80,7 +101,23 @@ async function onDownload({ format_id, prefer_mode }) {
       </div>
 
       <div class="mt-10">
-        <UrlSearch v-model="url" :loading="parsing" @parse="onParse" />
+        <UrlSearch v-if="!info" ref="searchRef" v-model="url" :loading="parsing" @parse="onParse" />
+        <div
+          v-else
+          class="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 rounded-full border border-indigo-200 bg-white px-4 py-2.5 shadow-sm"
+        >
+          <div class="flex min-w-0 items-center gap-2 text-sm">
+            <span class="shrink-0 font-medium text-slate-800">已识别</span>
+            <span class="truncate text-slate-400">{{ urlSnippet }}</span>
+          </div>
+          <button
+            type="button"
+            class="shrink-0 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+            @click="onChangeLink"
+          >
+            更换链接
+          </button>
+        </div>
       </div>
 
       <p v-if="error" class="mx-auto mt-6 max-w-3xl rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
