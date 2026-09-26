@@ -2,10 +2,19 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from services.captions import parse_caption_payload, pick_caption_track, transcript_plain
+from services.captions import (
+    _cues_from_info,
+    _empty_caption_error,
+    _is_rate_limited,
+    fetch_cues_for_url,
+    parse_caption_payload,
+    pick_caption_track,
+    transcript_plain,
+)
 from services.llm import _extract_json
 from services.notes import build_markdown, normalize_mind_map
 
@@ -100,13 +109,56 @@ class CaptionParseTests(unittest.TestCase):
         self.assertEqual(lang, "zh-CN")
         self.assertIn("zh.json", track["url"])
 
+    def test_pick_inline_data_track(self):
+        info = {
+            "subtitles": {
+                "zh": [{"ext": "vtt", "data": "WEBVTT\n\n00:00:01.000 --> 00:00:02.000\n你好"}]
+            }
+        }
+        lang, source, track = pick_caption_track(info)
+        self.assertEqual(lang, "zh")
+        self.assertIn("你好", track["data"])
+
     def test_pick_none(self):
         self.assertIsNone(pick_caption_track({"subtitles": {}, "automatic_captions": {}}))
+
+    def test_empty_error_for_danmaku_only(self):
+        msg = _empty_caption_error({"subtitles": {"danmaku": [{"url": "http://x"}]}})
+        self.assertIn("弹幕", msg)
+
+    def test_rate_limit_detected(self):
+        self.assertTrue(_is_rate_limited(Exception("Client error '429 Too Many Requests'")))
+
+    def test_cues_stop_on_429(self):
+        info = {
+            "title": "课",
+            "webpage_url": "https://www.youtube.com/watch?v=x",
+            "automatic_captions": {
+                "zh-Hans": [{"ext": "json3", "url": "http://x/a"}],
+                "en": [{"ext": "json3", "url": "http://x/b"}],
+            },
+        }
+        with patch(
+            "services.captions._read_track_bytes",
+            side_effect=Exception("Client error '429 Too Many Requests'"),
+        ):
+            with self.assertRaises(Exception) as ctx:
+                _cues_from_info(object(), info, "https://www.youtube.com/watch?v=x")
+        self.assertIn("限流", str(ctx.exception))
 
     def test_wrapped_bilibili_json(self):
         raw = json.dumps({"code": 0, "data": {"body": [{"from": 0, "to": 1, "content": "你好"}]}})
         cues = parse_caption_payload(raw.encode(), "json")
         self.assertEqual(cues[0]["text"], "你好")
+
+    def test_douyin_caption_list_ms(self):
+        raw = json.dumps(
+            [{"text": "早睡早起", "startTime": 1500, "endTime": 3200}]
+        )
+        cues = parse_caption_payload(raw.encode(), "json")
+        self.assertEqual(cues[0]["text"], "早睡早起")
+        self.assertAlmostEqual(cues[0]["start"], 1.5)
+        self.assertAlmostEqual(cues[0]["end"], 3.2)
 
     def test_transcript_truncates(self):
         cues = [{"start": 0, "end": 1, "text": "a" * 20} for _ in range(5)]
@@ -141,6 +193,22 @@ class NotesTests(unittest.TestCase):
         self.assertIn("## 思维导图", md)
         self.assertIn("## 字幕原文", md)
         self.assertIn("快排平均 nlogn", md)
+
+
+    def test_fetch_douyin_cues_from_cached_inline(self):
+        url = "https://www.douyin.com/video/1234567890123456789"
+        info = {
+            "title": "睡眠实验",
+            "webpage_url": url,
+            "subtitles": {
+                "zh": [{"ext": "vtt", "data": "WEBVTT\n\n00:00:01.000 --> 00:00:02.500\n早睡早起"}]
+            },
+            "automatic_captions": {},
+        }
+        with patch("services.captions.VideoDownloader") as Downloader:
+            Downloader.return_value.get_info.return_value = info
+            cues, lang, source, title = fetch_cues_for_url(url)
+        self.assertEqual(cues[0]["text"], "早睡早起")
 
 
 if __name__ == "__main__":

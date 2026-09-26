@@ -111,7 +111,7 @@ function exportDoc() {
       <div class="min-w-0 text-left">
         <p class="text-sm font-semibold text-ink">AI 学习笔记</p>
         <p class="mt-1 text-xs leading-relaxed text-muted">
-          用字幕生成大纲、要点、脑图和原文。不必先下载整片。无字幕时会说明原因。
+          用字幕生成大纲、要点、脑图和原文。不必先下载整片。油管带 CC / 自动字幕最稳；B 站弹幕和烧在画面上的字不算字幕轨。
         </p>
         <p v-if="!llmReady" class="mt-1 text-xs text-warn">
           后端尚未读到 DeepSeek Key。在 backend/.env 填写 DEEPSEEK_API_KEY 后重启 uvicorn。

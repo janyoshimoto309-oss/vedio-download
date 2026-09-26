@@ -34,12 +34,15 @@ class SummarizeApiTests(unittest.TestCase):
         self.assertEqual(res.status_code, 503)
         self.assertIn("DEEPSEEK_API_KEY", res.json()["detail"])
 
-    def test_summarize_douyin_rejected(self):
+    def test_summarize_douyin_without_captions(self):
         client = TestClient(app)
         with patch("api.notes.llm_configured", return_value=True):
             with patch(
                 "api.notes.fetch_cues_for_url",
-                side_effect=DownloadError("抖音当前没有可用字幕轨，无法生成学习笔记。请换有字幕的 B 站或 YouTube 讲解。"),
+                side_effect=DownloadError(
+                    "这个抖音视频没有可下载的字幕轨（画面上烧进去的字不算）。"
+                    "第一期不做语音转写。请换油管带 CC / 自动字幕的讲解。"
+                ),
             ):
                 res = client.post(
                     "/api/notes/summarize",

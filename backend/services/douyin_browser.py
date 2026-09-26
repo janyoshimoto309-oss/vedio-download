@@ -25,11 +25,14 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
 
     aweme_id = _id_from_url(page_url)
     captured: list[str] = []
+    captured_captions: list[str] = []
 
     def on_response(response) -> None:
         url = response.url or ""
         if _looks_like_media(url):
             captured.append(url)
+        if _looks_like_caption(url):
+            captured_captions.append(url)
 
     try:
         with sync_playwright() as p:
@@ -102,6 +105,8 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
         )
 
     thumb = snapshot.get("thumbnail") or None
+    official, auto = _captions_from_snapshot(snapshot, target_id if target_id != "douyin" else None)
+    _merge_caption_urls(official, captured_captions)
     return {
         "id": target_id,
         "title": title,
@@ -112,6 +117,8 @@ def extract_douyin_in_browser(page_url: str, timeout_ms: int = 35000) -> dict[st
         "webpage_url": final_url or page_url,
         "formats": formats,
         "format_id": formats[0]["format_id"],
+        "subtitles": official,
+        "automatic_captions": auto,
     }
 
 
@@ -132,15 +139,41 @@ _PAGE_JS = """() => {
   const main = playable[0] || videos.find(v => v.src.startsWith('http')) || {};
   const og = document.querySelector('meta[property="og:image"]');
   const render = document.getElementById('RENDER_DATA');
+  const tracks = [...document.querySelectorAll('track')].map(t => ({
+    src: t.src || t.getAttribute('src') || '',
+    kind: t.kind || '',
+    srclang: t.srclang || '',
+    label: t.label || ''
+  }));
   return {
     title: document.title || '',
     thumbnail: (og && og.content) || main.poster || '',
     duration: (main.duration && isFinite(main.duration)) ? main.duration : null,
     mainSrc: main.src || '',
     videoSrcs: playable.map(v => v.src),
-    renderText: render ? render.textContent : ''
+    renderText: render ? render.textContent : '',
+    htmlTracks: tracks
   };
 }"""
+
+
+def _looks_like_caption(url: str) -> bool:
+    low = url.lower()
+    if any(b in low for b in (".js", ".css", "captcha")):
+        return False
+    return any(h in low for h in ("caption", "subtitle", ".vtt", "webvtt", "/cla/"))
+
+
+def _merge_caption_urls(official: dict[str, list[dict[str, Any]]], urls: list[str]) -> None:
+    seen = {str(item.get("url") or "") for items in official.values() for item in items}
+    for url in urls:
+        if url in seen:
+            continue
+        seen.add(url)
+        ext = "srt" if ".srt" in url.lower() else "vtt"
+        official.setdefault("zh", []).append(
+            {"url": url, "ext": ext, "http_headers": {"Referer": _REFERER, "User-Agent": _UA}}
+        )
 
 
 def _looks_like_media(url: str) -> bool:
@@ -242,3 +275,153 @@ def _id_from_url(url: str) -> str:
     path = urlparse(url).path
     m = re.search(r"/video/(\d+)", path)
     return m.group(1) if m else "douyin"
+
+
+_CAPTION_LIST_KEYS = {
+    "captioninfos",
+    "caption_infos",
+    "subtitleinfos",
+    "subtitle_infos",
+    "auto_captions",
+    "autocaptions",
+}
+_CAPTION_OBJECT_KEYS = {"clainfo", "cla_info"}
+
+
+def _captions_from_snapshot(
+    snapshot: dict[str, Any], aweme_id: str | None
+) -> tuple[dict[str, list[dict[str, Any]]], dict[str, list[dict[str, Any]]]]:
+    official: dict[str, list[dict[str, Any]]] = {}
+    auto: dict[str, list[dict[str, Any]]] = {}
+    tracks = _captions_from_render(snapshot.get("renderText") or "", aweme_id)
+    for item in snapshot.get("htmlTracks") or []:
+        if not isinstance(item, dict):
+            continue
+        src = str(item.get("src") or "")
+        if src.startswith("http"):
+            tracks.append(
+                {
+                    "lang": str(item.get("srclang") or "zh") or "zh",
+                    "source": "official",
+                    "fmt": {"url": src, "ext": "vtt" if ".srt" not in src.lower() else "srt"},
+                }
+            )
+    for track in tracks:
+        lang = str(track.get("lang") or "zh")
+        bucket = auto if track.get("source") == "auto" else official
+        bucket.setdefault(lang, []).append(track["fmt"])
+    return official, auto
+
+
+def _captions_from_render(text: str, aweme_id: str | None = None) -> list[dict[str, Any]]:
+    if not text:
+        return []
+    try:
+        data = json.loads(unquote(text))
+    except Exception:
+        return []
+
+    found: list[dict[str, Any]] = []
+    seen: set[str] = set()
+
+    def add_item(item: Any) -> None:
+        track = _track_from_caption_item(item)
+        if not track:
+            return
+        key = str(track["fmt"].get("url") or track["fmt"].get("data") or "")
+        if not key or key in seen:
+            return
+        seen.add(key)
+        found.append(track)
+
+    def collect(node: Any) -> None:
+        if isinstance(node, dict):
+            for k, v in node.items():
+                nk = str(k).replace("-", "_").lower()
+                if nk in _CAPTION_LIST_KEYS and isinstance(v, list):
+                    for item in v:
+                        add_item(item)
+                elif nk in _CAPTION_OBJECT_KEYS and isinstance(v, dict):
+                    collect(v)
+                else:
+                    collect(v)
+        elif isinstance(node, list):
+            for item in node:
+                collect(item)
+
+    def walk_match(node: Any) -> None:
+        if isinstance(node, dict):
+            nid = _node_id(node)
+            if aweme_id and nid == aweme_id:
+                collect(node)
+                return
+            for v in node.values():
+                walk_match(v)
+        elif isinstance(node, list):
+            for item in node:
+                walk_match(item)
+
+    if aweme_id:
+        walk_match(data)
+    if not found:
+        collect(data)
+    return found
+
+
+def _track_from_caption_item(item: Any) -> dict[str, Any] | None:
+    if not isinstance(item, dict):
+        return None
+    url = ""
+    for key in ("url", "Url", "uri", "src"):
+        val = item.get(key)
+        if isinstance(val, str) and val.startswith("http"):
+            url = val
+            break
+        if isinstance(val, dict) and not url:
+            for entry in val.get("url_list") or val.get("urlList") or []:
+                if isinstance(entry, str) and entry.startswith("http"):
+                    url = entry
+                    break
+    if not url:
+        for key in ("url_list", "urlList"):
+            val = item.get(key)
+            if isinstance(val, list):
+                for entry in val:
+                    if isinstance(entry, str) and entry.startswith("http"):
+                        url = entry
+                        break
+                    if isinstance(entry, dict):
+                        nested = entry.get("url") or entry.get("src")
+                        if isinstance(nested, str) and nested.startswith("http"):
+                            url = nested
+                            break
+            if url:
+                break
+    inline = item.get("captionContent") or item.get("caption_content") or item.get("content")
+    inline_text = inline.strip() if isinstance(inline, str) else ""
+    if not url and not inline_text:
+        return None
+    lang = str(
+        item.get("languageCode")
+        or item.get("language_code")
+        or item.get("lang")
+        or item.get("language")
+        or "zh"
+    ).strip() or "zh"
+    fmt_name = str(
+        item.get("captionFormat") or item.get("caption_format") or item.get("format") or item.get("ext") or "webvtt"
+    ).lower()
+    if "srt" in fmt_name:
+        ext = "srt"
+    elif "json" in fmt_name:
+        ext = "json"
+    else:
+        ext = "vtt"
+    auto = bool(item.get("isAutoGenerated") or item.get("is_auto_generated") or item.get("auto"))
+    fmt: dict[str, Any] = {"ext": ext}
+    if url:
+        fmt["url"] = url
+        fmt["http_headers"] = {"Referer": _REFERER, "User-Agent": _UA}
+    if inline_text:
+        fmt["data"] = inline_text
+    return {"lang": lang, "source": "auto" if auto else "official", "fmt": fmt}

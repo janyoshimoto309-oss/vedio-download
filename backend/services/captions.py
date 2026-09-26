@@ -8,7 +8,8 @@ import httpx
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
-from services.downloader import build_ydl_opts
+from services.downloader import VideoDownloader, build_ydl_opts
+from services.douyin_browser import _captions_from_render, _id_from_url, extract_douyin_in_browser
 from services.url_normalize import is_douyin_url
 
 LANG_PREF = (
@@ -61,9 +62,13 @@ def iter_caption_tracks(info: dict[str, Any]) -> list[tuple[str, str, dict[str, 
                 continue
             for fmt in _ordered_formats(formats):
                 url = str(fmt.get("url") or "")
-                if not url or url in seen:
+                inline = str(fmt.get("data") or "")
+                if not url and not inline.strip():
                     continue
-                seen.add(url)
+                key = url or f"inline:{lang}:{source}:{id(fmt)}"
+                if key in seen:
+                    continue
+                seen.add(key)
                 found.append((str(lang), source, fmt))
     return found
 
@@ -94,7 +99,11 @@ def _ordered_langs(keys: list[str]) -> list[str]:
 
 
 def _ordered_formats(formats: list[Any]) -> list[dict[str, Any]]:
-    usable = [f for f in formats if isinstance(f, dict) and f.get("url")]
+    usable = [
+        f
+        for f in formats
+        if isinstance(f, dict) and (f.get("url") or str(f.get("data") or "").strip())
+    ]
     by_ext = {str(f.get("ext") or "").lower(): f for f in usable}
     ordered: list[dict[str, Any]] = []
     used: set[int] = set()
@@ -150,18 +159,71 @@ def _parse_jsonish(text: str) -> list[Cue]:
         return cues
     body = data.get("body") if isinstance(data, dict) else None
     if isinstance(body, list):
-        cues = []
-        for item in body:
-            if not isinstance(item, dict):
-                continue
-            content = str(item.get("content") or "").strip()
-            if not content:
-                continue
-            start = float(item.get("from") or 0)
-            end = float(item.get("to") or start)
-            cues.append({"start": start, "end": end, "text": content})
-        return cues
+        cues = _cues_from_list(body)
+        if cues:
+            return cues
+    if isinstance(data, list):
+        cues = _cues_from_list(data)
+        if cues:
+            return cues
+    utterances = data.get("utterances") if isinstance(data, dict) else None
+    if isinstance(utterances, list):
+        cues = _cues_from_list(utterances)
+        if cues:
+            return cues
     raise DownloadError("无法解析该字幕 JSON")
+
+
+_MS_TIME_KEYS = {
+    "starttime",
+    "start_time",
+    "tstartms",
+    "endtime",
+    "end_time",
+    "tendms",
+    "ddurationms",
+}
+
+
+def _cues_from_list(items: list[Any]) -> list[Cue]:
+    cues: list[Cue] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        content = str(
+            item.get("content") or item.get("text") or item.get("utf8") or ""
+        ).strip()
+        if not content:
+            continue
+        start, start_key = _first_time(
+            item, ("from", "start", "startTime", "start_time", "tStartMs")
+        )
+        start = _ms_or_sec(start, start_key) if start is not None else 0.0
+        end, end_key = _first_time(
+            item, ("to", "end", "endTime", "end_time", "tEndMs")
+        )
+        if end is None and item.get("dDurationMs") is not None:
+            end = start + float(item.get("dDurationMs") or 0) / 1000.0
+        elif end is None:
+            end = start
+        else:
+            end = _ms_or_sec(end, end_key)
+        cues.append({"start": start, "end": end, "text": content})
+    return cues
+
+
+def _first_time(item: dict[str, Any], keys: tuple[str, ...]) -> tuple[float | None, str]:
+    for key in keys:
+        if item.get(key) is not None:
+            return float(item.get(key) or 0), key
+    return None, ""
+
+
+def _ms_or_sec(value: float | None, key: str) -> float:
+    num = float(value or 0)
+    if key.replace("-", "_").lower() in _MS_TIME_KEYS:
+        return num / 1000.0
+    return num
 
 
 _TS = re.compile(
@@ -225,9 +287,7 @@ def transcript_plain(cues: list[Cue], max_chars: int) -> str:
 def fetch_cues_for_url(url: str) -> tuple[list[Cue], str, str, str]:
     """Return cues, lang, source, title. Raises DownloadError."""
     if is_douyin_url(url):
-        raise DownloadError(
-            "抖音当前没有可用字幕轨，无法生成学习笔记。请换有字幕的 B 站或 YouTube 讲解。"
-        )
+        return _fetch_douyin_cues(url)
     ydl_opts = build_ydl_opts(
         url,
         skip_download=True,
@@ -244,28 +304,133 @@ def fetch_cues_for_url(url: str) -> tuple[list[Cue], str, str, str]:
                 info = next((e for e in entries if e), None)
                 if not info:
                     raise DownloadError("播放列表为空，请粘贴单条视频链接")
-            tracks = iter_caption_tracks(info)
-            if not tracks:
-                raise DownloadError(
-                    "这个视频没有可用字幕（含自动字幕），第一期不做语音转写。请换有字幕的公开视频。"
-                )
-            referer = str(info.get("webpage_url") or url)
-            last_err = "字幕文件为空或无法解析"
-            for lang, source, track in tracks:
-                try:
-                    raw = _read_track_bytes(ydl, str(track["url"]), referer=referer)
-                    cues = parse_caption_payload(raw, str(track.get("ext") or "vtt"))
-                except Exception as exc:
-                    last_err = f"拉取字幕失败：{exc}"
-                    continue
-                if cues:
-                    title = str(info.get("title") or "未命名视频")
-                    return cues, lang, source, title
-            raise DownloadError(last_err)
+            return _cues_from_info(ydl, info, url)
     except DownloadError:
         raise
     except Exception as exc:
         raise DownloadError(f"拉取字幕失败：{exc}") from exc
+
+
+def _fetch_douyin_cues(url: str) -> tuple[list[Cue], str, str, str]:
+    downloader = VideoDownloader()
+    info = downloader.get_info(url)
+    if not iter_caption_tracks(info):
+        _merge_caption_buckets(info, *_aweme_caption_buckets(url))
+        if not iter_caption_tracks(info) and str(info.get("extractor") or "") != "DouyinBrowser":
+            try:
+                fresh = extract_douyin_in_browser(url)
+                _merge_caption_buckets(
+                    info, fresh.get("subtitles") or {}, fresh.get("automatic_captions") or {}
+                )
+                if fresh.get("title"):
+                    info["title"] = fresh["title"]
+                if fresh.get("webpage_url"):
+                    info["webpage_url"] = fresh["webpage_url"]
+            except DownloadError:
+                pass
+        downloader._info_cache[url] = info
+    ydl_opts = build_ydl_opts(url, skip_download=True)
+    with YoutubeDL(ydl_opts) as ydl:
+        try:
+            return _cues_from_info(ydl, info, url)
+        except DownloadError as exc:
+            msg = str(exc)
+            if "没有可用字幕" in msg or "只有弹幕" in msg:
+                raise DownloadError(
+                    "这个抖音视频没有可下载的字幕轨（画面上烧进去的字不算）。"
+                    "第一期不做语音转写。请换油管带 CC / 自动字幕的讲解。"
+                ) from exc
+            raise
+
+
+def _merge_caption_buckets(
+    info: dict[str, Any],
+    official: dict[str, list[dict[str, Any]]],
+    auto: dict[str, list[dict[str, Any]]],
+) -> None:
+    if official:
+        bucket = info.setdefault("subtitles", {})
+        for lang, tracks in official.items():
+            bucket.setdefault(lang, []).extend(tracks)
+    if auto:
+        bucket = info.setdefault("automatic_captions", {})
+        for lang, tracks in auto.items():
+            bucket.setdefault(lang, []).extend(tracks)
+
+
+def _aweme_caption_buckets(
+    url: str,
+) -> tuple[dict[str, list[dict[str, Any]]], dict[str, list[dict[str, Any]]]]:
+    official: dict[str, list[dict[str, Any]]] = {}
+    auto: dict[str, list[dict[str, Any]]] = {}
+    aweme_id = _id_from_url(url)
+    try:
+        ydl_opts = build_ydl_opts(url, skip_download=True)
+        with YoutubeDL(ydl_opts) as ydl:
+            ie = ydl.get_info_extractor("Douyin")
+            raw = ie._download_json(
+                "https://www.douyin.com/aweme/v1/web/aweme/detail/",
+                aweme_id,
+                query={"aweme_id": aweme_id},
+                fatal=False,
+            )
+        detail = (raw or {}).get("aweme_detail") if isinstance(raw, dict) else None
+        dumped = json.dumps(detail or {}, ensure_ascii=False)
+        tracks = _captions_from_render(dumped, aweme_id if aweme_id != "douyin" else None)
+        for track in tracks:
+            lang = str(track.get("lang") or "zh")
+            bucket = auto if track.get("source") == "auto" else official
+            bucket.setdefault(lang, []).append(track["fmt"])
+    except Exception:
+        return official, auto
+    return official, auto
+
+
+MAX_TRACK_TRIES = 8
+
+
+def _empty_caption_error(info: dict[str, Any]) -> str:
+    keys = list((info.get("subtitles") or {}).keys()) + list((info.get("automatic_captions") or {}).keys())
+    usable = [k for k in keys if _norm_lang(k) not in SKIP_LANGS]
+    if keys and not usable:
+        return (
+            "这个视频只有弹幕、没有字幕轨。第一期不做语音转写。"
+            "请换油管带 CC / 自动字幕的讲解。"
+        )
+    return (
+        "这个视频没有可用字幕（含自动字幕），第一期不做语音转写。"
+        "请换油管带 CC / 自动字幕的讲解。"
+    )
+
+
+def _is_rate_limited(exc: BaseException) -> bool:
+    msg = str(exc)
+    return "429" in msg or "Too Many Requests" in msg
+
+
+def _cues_from_info(ydl: YoutubeDL, info: dict[str, Any], url: str) -> tuple[list[Cue], str, str, str]:
+    tracks = iter_caption_tracks(info)
+    if not tracks:
+        raise DownloadError(_empty_caption_error(info))
+    referer = str(info.get("webpage_url") or url)
+    last_err = "字幕文件为空或无法解析"
+    for lang, source, track in tracks[:MAX_TRACK_TRIES]:
+        try:
+            inline = track.get("data")
+            if isinstance(inline, str) and inline.strip():
+                raw = inline.encode("utf-8")
+            else:
+                raw = _read_track_bytes(ydl, str(track.get("url") or ""), referer=referer)
+            cues = parse_caption_payload(raw, str(track.get("ext") or "vtt"))
+        except Exception as exc:
+            if _is_rate_limited(exc):
+                raise DownloadError("字幕接口暂时限流，请过一两分钟再点生成学习笔记。") from exc
+            last_err = f"拉取字幕失败：{exc}"
+            continue
+        if cues:
+            title = str(info.get("title") or "未命名视频")
+            return cues, lang, source, title
+    raise DownloadError(last_err)
 
 
 def _read_track_bytes(ydl: YoutubeDL, sub_url: str, referer: str = "") -> bytes:
@@ -285,6 +450,9 @@ def _read_track_bytes(ydl: YoutubeDL, sub_url: str, referer: str = "") -> bytes:
     if "bilibili.com" in (referer or "") or "hdslb.com" in sub_url:
         headers.setdefault("Referer", "https://www.bilibili.com/")
         headers["Origin"] = "https://www.bilibili.com"
+    if "douyin.com" in (referer or "") or "douyin" in sub_url:
+        headers["Referer"] = "https://www.douyin.com/"
+        headers["Origin"] = "https://www.douyin.com"
     with httpx.Client(timeout=httpx.Timeout(30.0, connect=10.0), follow_redirects=True) as client:
         resp = client.get(sub_url, headers=headers)
         resp.raise_for_status()
