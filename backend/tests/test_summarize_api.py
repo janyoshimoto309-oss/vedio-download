@@ -92,5 +92,69 @@ class SummarizeApiTests(unittest.TestCase):
         self.assertNotIn("## 核心要点", data["markdown"])
 
 
+class ChatApiTests(unittest.TestCase):
+    def test_chat_without_key(self):
+        client = TestClient(app)
+        with patch("api.notes.llm_configured", return_value=False):
+            res = client.post(
+                "/api/notes/chat",
+                json={"url": BV, "messages": [{"role": "user", "content": "讲了什么"}]},
+            )
+        self.assertEqual(res.status_code, 503)
+        self.assertIn("DEEPSEEK_API_KEY", res.json()["detail"])
+
+    def test_chat_without_captions(self):
+        client = TestClient(app)
+        with patch("api.notes.llm_configured", return_value=True):
+            with patch(
+                "api.notes.fetch_cues_for_url",
+                side_effect=DownloadError("没有可用字幕轨"),
+            ):
+                res = client.post(
+                    "/api/notes/chat",
+                    json={"url": BV, "messages": [{"role": "user", "content": "讲了什么"}]},
+                )
+        self.assertEqual(res.status_code, 400)
+        self.assertIn("字幕", res.json()["detail"])
+
+    def test_chat_uses_transcript(self):
+        client = TestClient(app)
+        cues = [{"start": 0.0, "end": 2.0, "text": "今天讲二分查找"}]
+        captured = {}
+
+        def fake_chat(messages):
+            captured["messages"] = messages
+            return "二分查找是折半。"
+
+        with patch("api.notes.llm_configured", return_value=True):
+            with patch("api.notes.fetch_cues_for_url", return_value=(cues, "zh-Hans", "official", "算法课")):
+                with patch("services.notes.chat_text", fake_chat):
+                    res = client.post(
+                        "/api/notes/chat",
+                        json={
+                            "url": BV,
+                            "messages": [
+                                {"role": "user", "content": "这节课讲什么"},
+                                {"role": "assistant", "content": "讲查找。"},
+                                {"role": "user", "content": "具体怎么做"},
+                            ],
+                        },
+                    )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["reply"], "二分查找是折半。")
+        system = captured["messages"][0]["content"]
+        self.assertIn("今天讲二分查找", system)
+        self.assertIn("算法课", system)
+        self.assertEqual(captured["messages"][-1]["content"], "具体怎么做")
+
+    def test_chat_rejects_assistant_last(self):
+        client = TestClient(app)
+        res = client.post(
+            "/api/notes/chat",
+            json={"url": BV, "messages": [{"role": "assistant", "content": "你好"}]},
+        )
+        self.assertEqual(res.status_code, 422)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -16,6 +16,16 @@ export async function fetchNotesReady() {
   return res.json()
 }
 
+export async function askVideo(url, messages) {
+  const res = await fetch('/api/notes/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, messages }),
+  })
+  if (!res.ok) await parseError(res)
+  return res.json()
+}
+
 export async function summarizePart(url, part) {
   const res = await fetch('/api/notes/summarize', {
     method: 'POST',

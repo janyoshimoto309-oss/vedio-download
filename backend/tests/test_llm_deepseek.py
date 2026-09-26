@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from services.llm import build_chat_payload, chat_completions_url, redact_secret
+from services.llm import build_chat_payload, build_text_chat_payload, chat_completions_url, redact_secret
 
 
 class DeepSeekClientTests(unittest.TestCase):
@@ -27,6 +27,13 @@ class DeepSeekClientTests(unittest.TestCase):
         self.assertEqual(payload["thinking"], {"type": "disabled"})
         self.assertIn("max_tokens", payload)
         self.assertEqual(payload["messages"][0]["role"], "system")
+
+    def test_text_chat_payload_has_no_json_mode(self):
+        payload = build_text_chat_payload([{"role": "user", "content": "问"}])
+        self.assertEqual(payload["stream"], False)
+        self.assertEqual(payload["thinking"], {"type": "disabled"})
+        self.assertNotIn("response_format", payload)
+        self.assertEqual(payload["messages"][0]["role"], "user")
 
     def test_redact_bearer_and_sk(self):
         raw = "Authorization: Bearer sk-abcdefghijklmnopqrstuvwxyz error"

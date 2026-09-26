@@ -4,10 +4,16 @@ from fastapi import APIRouter, HTTPException
 from yt_dlp.utils import DownloadError
 
 from config import OPENAI_MODEL, SUMMARIZE_MAX_CHARS
-from models.notes_schemas import OutlineItem, SummarizeRequest, SummarizeResponse, TranscriptCue
+from models.notes_schemas import (
+    ChatRequest,
+    ChatResponse,
+    SummarizeRequest,
+    SummarizeResponse,
+    TranscriptCue,
+)
 from services.captions import fetch_cues_for_url, format_timestamp, transcript_plain
 from services.llm import LLMError, llm_configured
-from services.notes import build_markdown, summarize_part
+from services.notes import answer_video_chat, build_markdown, summarize_part
 from services.url_normalize import extract_video_url
 
 router = APIRouter(prefix="/api/notes", tags=["notes"])
@@ -69,3 +75,34 @@ def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
         transcript=transcript_cues,
         markdown=markdown,
     )
+
+
+@router.post("/chat", response_model=ChatResponse)
+def video_chat(body: ChatRequest) -> ChatResponse:
+    if not llm_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="未配置 DeepSeek。请在 backend/.env 填写 DEEPSEEK_API_KEY 后重启后端。",
+        )
+    url = extract_video_url(body.url)
+    try:
+        cues, _lang, _source, title = fetch_cues_for_url(url)
+    except DownloadError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"拉取字幕失败：{exc}") from exc
+
+    transcript = transcript_plain(cues, SUMMARIZE_MAX_CHARS)
+    if not transcript.strip():
+        raise HTTPException(status_code=400, detail="没有可用字幕，暂时无法回答。")
+    try:
+        reply = answer_video_chat(
+            title,
+            transcript,
+            [item.model_dump() for item in body.messages],
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except LLMError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    return ChatResponse(reply=reply)

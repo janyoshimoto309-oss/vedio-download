@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Literal
 
 from services.captions import Cue, format_timestamp, transcript_plain
-from services.llm import chat_json
+from services.llm import chat_json, chat_text
 
 NotePart = Literal["outline", "points", "map", "transcript"]
 
@@ -115,6 +115,33 @@ def build_markdown(
         lines.append(transcript_plain(cues, 200_000))
         lines.append("")
     return "\n".join(lines)
+
+
+CHAT_HISTORY_LIMIT = 16
+CHAT_MESSAGE_CHARS = 2000
+
+
+def build_chat_messages(title: str, transcript: str, history: list[dict[str, Any]]) -> list[dict[str, str]]:
+    trimmed: list[dict[str, str]] = []
+    for item in history[-CHAT_HISTORY_LIMIT:]:
+        role = item.get("role")
+        content = str(item.get("content") or "").strip()[:CHAT_MESSAGE_CHARS]
+        if role not in ("user", "assistant") or not content:
+            continue
+        trimmed.append({"role": role, "content": content})
+    if not trimmed or trimmed[-1]["role"] != "user":
+        raise ValueError("请先输入一个问题。")
+    system = (
+        "你是视频学习助手。只能根据下面的字幕回答用户问题。"
+        "字幕里没有的内容，直接说不知道，不要根据画面、弹幕或常识编造视频里没说到的事实。"
+        "用简体中文，简洁回答。\n\n"
+        f"标题：{title}\n\n字幕：\n{transcript}"
+    )
+    return [{"role": "system", "content": system}, *trimmed]
+
+
+def answer_video_chat(title: str, transcript: str, history: list[dict[str, Any]]) -> str:
+    return chat_text(build_chat_messages(title, transcript, history))
 
 
 def _mind_map_md(node: dict[str, Any], depth: int) -> list[str]:

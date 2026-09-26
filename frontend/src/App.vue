@@ -3,6 +3,7 @@ import { computed, nextTick, onMounted, ref } from 'vue'
 import UrlSearch from './components/UrlSearch.vue'
 import VideoResult from './components/VideoResult.vue'
 import VideoStudyNotes from './components/VideoStudyNotes.vue'
+import VideoAsk from './components/VideoAsk.vue'
 import HowItWorks from './components/HowItWorks.vue'
 import StatusAlert from './components/StatusAlert.vue'
 import ResultSkeleton from './components/ResultSkeleton.vue'
@@ -222,6 +223,7 @@ async function onChangeLink() {
       <ResultSkeleton v-if="parsing" />
       <VideoResult v-if="info" :info="info" :downloading="downloading" @download="onDownload" />
       <VideoStudyNotes v-if="info" :url="url" />
+      <VideoAsk v-if="info" :url="url" />
       <HowItWorks v-if="showSteps" />
     </main>
 

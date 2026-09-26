@@ -58,13 +58,26 @@ def build_chat_payload(system: str, user: str) -> dict[str, Any]:
     }
 
 
-def chat_json(system: str, user: str) -> dict[str, Any]:
+def build_text_chat_payload(messages: list[dict[str, str]]) -> dict[str, Any]:
+    return {
+        "model": OPENAI_MODEL,
+        "messages": messages,
+        "stream": False,
+        "max_tokens": LLM_MAX_TOKENS,
+        "thinking": {"type": "disabled"},
+    }
+
+
+def _require_key() -> None:
     if not OPENAI_API_KEY:
         raise LLMError(
             "未配置 DeepSeek Key。请在 backend/.env 填写 DEEPSEEK_API_KEY 或 OPENAI_API_KEY 后重启后端。"
         )
+
+
+def _post_chat(payload: dict[str, Any]) -> str:
+    _require_key()
     url = chat_completions_url()
-    payload = build_chat_payload(system, user)
     headers = {
         "Authorization": f"Bearer {OPENAI_API_KEY}",
         "Content-Type": "application/json",
@@ -86,9 +99,18 @@ def chat_json(system: str, user: str) -> dict[str, Any]:
         content = message.get("content")
     except Exception as exc:
         raise LLMError("大模型返回格式无法解析") from exc
-    if not content:
+    if not content or not str(content).strip():
         raise LLMError("模型返回了空内容，请稍后重试。")
+    return str(content)
+
+
+def chat_json(system: str, user: str) -> dict[str, Any]:
+    content = _post_chat(build_chat_payload(system, user))
     return _extract_json(content)
+
+
+def chat_text(messages: list[dict[str, str]]) -> str:
+    return _post_chat(build_text_chat_payload(messages)).strip()
 
 
 def _extract_json(content: str) -> dict[str, Any]:
