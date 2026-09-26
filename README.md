@@ -11,9 +11,8 @@
 | [docs/02-技术方案.md](./docs/02-技术方案.md) | 架构、双下载模式、平台分流 |
 | [docs/03-设计文档.md](./docs/03-设计文档.md) | UI、API 契约、组件清单 |
 | [docs/04-实现与产品差异.md](./docs/04-实现与产品差异.md) | 用户界面 vs 后端下载策略 |
-| [docs/05-视频下载功能总结.md](./docs/05-视频下载功能总结.md) | 已交付能力与踩坑（功能完成后优先读） |
-| [docs/06-AI视频学习笔记.md](./docs/06-AI视频学习笔记.md) | AI 学习笔记怎么配、怎么测 |
-| [docs/07-AI学习笔记细化方案.md](./docs/07-AI学习笔记细化方案.md) | 学习笔记第一期完整方案 |
+| [docs/05-视频下载功能总结.md](./docs/05-视频下载功能总结.md) | 已交付下载能力与踩坑 |
+| [docs/06-AI学习笔记功能总结.md](./docs/06-AI学习笔记功能总结.md) | 已交付学习笔记能力与踩坑 |
 
 ## 项目状态
 
@@ -39,7 +38,7 @@ python -m playwright install chromium
 python -m uvicorn main:app --reload --port 8000
 ```
 
-健康检查：<http://127.0.0.1:8000/api/health>（`llm` 表示是否已配置大模型 Key）
+健康检查：<http://127.0.0.1:8000/api/health>。大模型是否配好看 <http://127.0.0.1:8000/api/notes/ready> 的 `llm`。
 
 首次装 Playwright 会下载 Chromium，体积较大。必须用**装了依赖的同一个虚拟环境**启动 uvicorn，否则抖音解析会失败。
 
@@ -71,7 +70,7 @@ cd backend
 python -m unittest discover -s tests -v
 ```
 
-联网建议各测：一条 YouTube、一条 B 站、一条抖音分享口令或 `/video/{id}`。学习笔记请用**带字幕**的 B 站/YouTube，并在 `backend/.env` 配置 `DEEPSEEK_API_KEY`（不要写进 `.env.example`）。
+联网建议各测：一条 YouTube、一条 B 站、一条抖音分享口令或 `/video/{id}`。学习笔记请用**带 CC / 自动字幕**的油管或 B 站讲解，四个按钮分开点；在 `backend/.env` 配置 `DEEPSEEK_API_KEY`（不要写进 `.env.example`）。无 Key 时仍可点「生成字幕」。
 
 ## 平台分流
 

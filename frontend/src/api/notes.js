@@ -16,11 +16,11 @@ export async function fetchNotesReady() {
   return res.json()
 }
 
-export async function summarizeVideo(url) {
+export async function summarizePart(url, part) {
   const res = await fetch('/api/notes/summarize', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url }),
+    body: JSON.stringify({ url, part }),
   })
   if (!res.ok) await parseError(res)
   return res.json()

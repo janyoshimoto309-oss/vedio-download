@@ -10,6 +10,7 @@ from services.captions import (
     _cues_from_info,
     _empty_caption_error,
     _is_rate_limited,
+    clear_cue_cache,
     fetch_cues_for_url,
     parse_caption_payload,
     pick_caption_track,
@@ -180,13 +181,13 @@ class NotesTests(unittest.TestCase):
         md = build_markdown(
             title="课",
             webpage_url="https://bilibili.com/video/BV1",
+            language="zh-Hans",
+            source="official",
             overview="讲排序",
             outline=[{"timestamp": "0:01", "title": "引入", "summary": "开场"}],
             key_points=["快排平均 nlogn"],
             mind_map={"label": "算法", "children": [{"label": "排序", "children": []}]},
             cues=[{"start": 0, "end": 1, "text": "大家好"}],
-            lang="zh-Hans",
-            source="official",
         )
         self.assertIn("## 大纲", md)
         self.assertIn("## 核心要点", md)
@@ -196,6 +197,7 @@ class NotesTests(unittest.TestCase):
 
 
     def test_fetch_douyin_cues_from_cached_inline(self):
+        clear_cue_cache()
         url = "https://www.douyin.com/video/1234567890123456789"
         info = {
             "title": "睡眠实验",

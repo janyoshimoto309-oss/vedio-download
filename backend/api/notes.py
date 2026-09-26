@@ -7,7 +7,7 @@ from config import OPENAI_MODEL, SUMMARIZE_MAX_CHARS
 from models.notes_schemas import OutlineItem, SummarizeRequest, SummarizeResponse, TranscriptCue
 from services.captions import fetch_cues_for_url, format_timestamp, transcript_plain
 from services.llm import LLMError, llm_configured
-from services.notes import build_markdown, summarize_from_cues
+from services.notes import build_markdown, summarize_part
 from services.url_normalize import extract_video_url
 
 router = APIRouter(prefix="/api/notes", tags=["notes"])
@@ -21,7 +21,7 @@ def notes_ready():
 
 @router.post("/summarize", response_model=SummarizeResponse)
 def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
-    if not llm_configured():
+    if body.part != "transcript" and not llm_configured():
         raise HTTPException(
             status_code=503,
             detail="未配置 DeepSeek。请在 backend/.env 填写 DEEPSEEK_API_KEY 后重启后端。",
@@ -34,33 +34,21 @@ def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"拉取字幕失败：{exc}") from exc
 
-    transcript = transcript_plain(cues, SUMMARIZE_MAX_CHARS)
-    try:
-        notes = summarize_from_cues(title, cues, transcript)
-    except LLMError as exc:
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    kwargs: dict = {}
+    if body.part == "transcript":
+        kwargs["cues"] = cues
+    else:
+        transcript = transcript_plain(cues, SUMMARIZE_MAX_CHARS)
+        try:
+            notes = summarize_part(body.part, title, transcript)
+        except LLMError as exc:
+            raise HTTPException(status_code=502, detail=str(exc)) from exc
+        kwargs.update(notes)
 
-    markdown = build_markdown(
-        title=title,
-        webpage_url=url,
-        overview=notes["overview"],
-        outline=notes["outline"],
-        key_points=notes["key_points"],
-        mind_map=notes["mind_map"],
-        cues=cues,
-        lang=lang,
-        source=source,
-    )
-    return SummarizeResponse(
-        title=title,
-        webpage_url=url,
-        language=lang,
-        source=source,
-        overview=notes["overview"],
-        outline=[OutlineItem(**item) for item in notes["outline"]],
-        key_points=notes["key_points"],
-        mind_map=notes["mind_map"],
-        transcript=[
+    markdown = build_markdown(title, url, lang, source, **kwargs)
+    transcript_cues = []
+    if body.part == "transcript":
+        transcript_cues = [
             TranscriptCue(
                 start=c["start"],
                 end=c["end"],
@@ -68,6 +56,16 @@ def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
                 text=c["text"],
             )
             for c in cues
-        ],
+        ]
+    return SummarizeResponse(
+        part=body.part,
+        title=title,
+        webpage_url=url,
+        language=lang,
+        source=source,
+        outline=kwargs.get("outline") or [],
+        key_points=kwargs.get("key_points") or [],
+        mind_map=kwargs.get("mind_map"),
+        transcript=transcript_cues,
         markdown=markdown,
     )

@@ -1,10 +1,13 @@
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
+
+NotePart = Literal["outline", "points", "map", "transcript"]
 
 
 class SummarizeRequest(BaseModel):
     url: str = Field(..., min_length=8)
+    part: NotePart
 
 
 class TranscriptCue(BaseModel):
@@ -27,15 +30,15 @@ class MindMapNode(BaseModel):
 
 
 class SummarizeResponse(BaseModel):
+    part: NotePart
     title: str
     webpage_url: str
     language: str
     source: str
-    overview: str
-    outline: list[OutlineItem]
-    key_points: list[str]
-    mind_map: MindMapNode
-    transcript: list[TranscriptCue]
+    outline: list[OutlineItem] = []
+    key_points: list[str] = []
+    mind_map: Optional[MindMapNode] = None
+    transcript: list[TranscriptCue] = []
     markdown: str
 
 

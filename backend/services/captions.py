@@ -10,7 +10,7 @@ from yt_dlp.utils import DownloadError
 
 from services.downloader import VideoDownloader, build_ydl_opts
 from services.douyin_browser import _captions_from_render, _id_from_url, extract_douyin_in_browser
-from services.url_normalize import is_douyin_url
+from services.url_normalize import extract_video_url, is_douyin_url
 
 LANG_PREF = (
     "zh-hans",
@@ -28,6 +28,7 @@ SKIP_LANGS = {"danmaku", "live_chat", "danmaku-ai"}
 EXT_PREF = ("json3", "json", "srv3", "vtt", "srt", "ttml")
 
 Cue = dict[str, Any]
+_CUE_CACHE: dict[str, tuple[list[Cue], str, str, str]] = {}
 
 
 def format_timestamp(seconds: float) -> str:
@@ -284,8 +285,22 @@ def transcript_plain(cues: list[Cue], max_chars: int) -> str:
     return "\n".join(parts)
 
 
+def clear_cue_cache() -> None:
+    _CUE_CACHE.clear()
+
+
 def fetch_cues_for_url(url: str) -> tuple[list[Cue], str, str, str]:
     """Return cues, lang, source, title. Raises DownloadError."""
+    key = extract_video_url(url)
+    cached = _CUE_CACHE.get(key)
+    if cached is not None:
+        return cached
+    result = _fetch_cues_uncached(key)
+    _CUE_CACHE[key] = result
+    return result
+
+
+def _fetch_cues_uncached(url: str) -> tuple[list[Cue], str, str, str]:
     if is_douyin_url(url):
         return _fetch_douyin_cues(url)
     ydl_opts = build_ydl_opts(
