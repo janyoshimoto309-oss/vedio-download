@@ -20,6 +20,11 @@ _COOKIE_HINT = (
 )
 
 
+_YT_BOT_HINT = (
+    "YouTube 暂时把这次请求当成机器人了。链接本身没问题，过几秒再点一次「开始」通常就能解析。"
+)
+
+
 def ffmpeg_available() -> bool:
     return shutil.which("ffmpeg") is not None
 
@@ -65,6 +70,8 @@ def build_ydl_opts(url: str | None = None, **extra: Any) -> dict[str, Any]:
 
 def _rewrite_error(url: str, exc: BaseException) -> DownloadError:
     msg = str(exc)
+    if "Sign in to confirm" in msg or "not a bot" in msg.lower():
+        return DownloadError(_YT_BOT_HINT)
     if _is_douyin(url) and (
         "Fresh cookies" in msg
         or "Failed to parse JSON" in msg

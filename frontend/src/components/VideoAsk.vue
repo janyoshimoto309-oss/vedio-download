@@ -4,6 +4,9 @@ import { askVideo, fetchNotesReady } from '../api/notes'
 
 const props = defineProps({
   url: { type: String, required: true },
+  embedded: { type: Boolean, default: false },
+  inset: { type: Boolean, default: false },
+  pane: { type: Boolean, default: false },
 })
 
 const llmReady = ref(true)
@@ -34,10 +37,17 @@ onMounted(async () => {
 
 function scrollThread() {
   nextTick(() => {
-    const el = thread.value
-    if (el) el.scrollTop = el.scrollHeight
+    requestAnimationFrame(() => {
+      const el = thread.value
+      if (el) el.scrollTop = el.scrollHeight
+    })
   })
 }
+
+watch(
+  () => messages.value.length,
+  () => scrollThread(),
+)
 
 async function send() {
   const text = draft.value.trim()
@@ -67,21 +77,23 @@ function onKeydown(event) {
 </script>
 
 <template>
-  <section class="mx-auto mt-4 w-full max-w-search rounded-2xl border border-line bg-raised">
-    <div class="p-5 text-left">
-      <p class="text-sm font-semibold text-ink">问这个视频</p>
-      <p class="mt-1 text-xs leading-relaxed text-muted">
-        根据字幕回答。没有字幕轨时这里会失败，下载不受影响。
-      </p>
-      <p v-if="!llmReady" class="mt-1 text-xs text-warn">
-        后端尚未读到 DeepSeek Key。问答暂不可用。
-      </p>
-    </div>
-
+  <section
+    class="flex w-full min-h-0 flex-col overflow-hidden"
+    :class="
+      pane
+        ? 'h-full bg-raised'
+        : inset
+          ? 'shrink-0 border-t border-line bg-surface/80'
+          : embedded
+            ? 'shrink-0 rounded-2xl border border-line bg-raised'
+            : 'mx-auto mt-4 max-w-search rounded-2xl border border-line bg-raised'
+    "
+  >
     <div
-      v-if="messages.length || sending"
+      v-show="messages.length || sending"
       ref="thread"
-      class="max-h-80 space-y-3 overflow-auto border-t border-line px-5 py-4 text-left"
+      class="min-h-0 space-y-3 overflow-y-auto overscroll-contain px-5 py-3 text-left"
+      :class="pane ? 'flex-1' : inset ? 'max-h-52 lg:max-h-64' : embedded ? 'max-h-56 lg:max-h-72' : 'max-h-80'"
     >
       <div
         v-for="(item, i) in messages"
@@ -99,14 +111,27 @@ function onKeydown(event) {
       <p v-if="sending" class="text-xs text-muted">正在回答…</p>
     </div>
 
-    <p v-if="error" class="px-5 pb-2 text-left text-sm text-danger">{{ error }}</p>
+    <p v-if="error" class="px-5 pb-1 text-left text-sm text-danger">{{ error }}</p>
 
-    <form class="flex items-end gap-2 border-t border-line p-4" @submit.prevent="send">
+    <form
+      class="flex shrink-0 flex-col gap-2 px-5 py-4"
+      :class="[
+        pane ? 'mt-auto border-t border-line' : '',
+        !pane && (messages.length || sending) ? 'border-t border-line/80' : '',
+      ]"
+      @submit.prevent="send"
+    >
+      <div v-if="!pane" class="flex items-center justify-between gap-2">
+        <p class="text-sm font-semibold text-ink">问AI</p>
+        <p v-if="!llmReady" class="text-xs text-warn">问答暂时不可用</p>
+      </div>
+      <p v-else-if="!llmReady" class="text-xs text-warn">问答暂时不可用</p>
+      <div class="flex items-end gap-2">
       <textarea
         v-model="draft"
         rows="2"
         maxlength="2000"
-        placeholder="问问这个视频讲了什么"
+        placeholder="例如：他的结论是什么"
         :disabled="sending || !llmReady || !url"
         class="min-h-[44px] flex-1 resize-none rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink outline-none placeholder:text-muted disabled:opacity-70"
         @keydown="onKeydown"
@@ -118,6 +143,7 @@ function onKeydown(event) {
       >
         发送
       </button>
+      </div>
     </form>
   </section>
 </template>

@@ -15,6 +15,13 @@ from services.captions import fetch_cues_for_url, format_timestamp, transcript_p
 from services.llm import LLMError, llm_configured
 from services.notes import answer_video_chat, build_markdown, summarize_part
 from services.url_normalize import extract_video_url
+from services.zh_convert import (
+    simplify_cues,
+    simplify_key_points,
+    simplify_mind_map,
+    simplify_outline,
+    to_simplified,
+)
 
 router = APIRouter(prefix="/api/notes", tags=["notes"])
 
@@ -30,7 +37,7 @@ def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
     if body.part != "transcript" and not llm_configured():
         raise HTTPException(
             status_code=503,
-            detail="未配置 DeepSeek。请在 backend/.env 填写 DEEPSEEK_API_KEY 后重启后端。",
+            detail="笔记和问答暂时不可用。",
         )
     url = extract_video_url(body.url)
     try:
@@ -38,10 +45,12 @@ def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
     except DownloadError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
-        raise HTTPException(status_code=400, detail=f"拉取字幕失败：{exc}") from exc
+        raise HTTPException(status_code=400, detail="字幕暂时取不到，换一条视频或稍后再试。") from exc
 
+    title = to_simplified(title)
     kwargs: dict = {}
     if body.part == "transcript":
+        cues = simplify_cues(cues)
         kwargs["cues"] = cues
     else:
         transcript = transcript_plain(cues, SUMMARIZE_MAX_CHARS)
@@ -50,8 +59,14 @@ def video_summarize(body: SummarizeRequest) -> SummarizeResponse:
         except LLMError as exc:
             raise HTTPException(status_code=502, detail=str(exc)) from exc
         kwargs.update(notes)
+        if kwargs.get("outline"):
+            kwargs["outline"] = simplify_outline(kwargs["outline"])
+        if kwargs.get("key_points"):
+            kwargs["key_points"] = simplify_key_points(kwargs["key_points"])
+        if kwargs.get("mind_map"):
+            kwargs["mind_map"] = simplify_mind_map(kwargs["mind_map"])
 
-    markdown = build_markdown(title, url, lang, source, **kwargs)
+    markdown = to_simplified(build_markdown(title, url, lang, source, **kwargs))
     transcript_cues = []
     if body.part == "transcript":
         transcript_cues = [
@@ -82,7 +97,7 @@ def video_chat(body: ChatRequest) -> ChatResponse:
     if not llm_configured():
         raise HTTPException(
             status_code=503,
-            detail="未配置 DeepSeek。请在 backend/.env 填写 DEEPSEEK_API_KEY 后重启后端。",
+            detail="笔记和问答暂时不可用。",
         )
     url = extract_video_url(body.url)
     try:
@@ -90,11 +105,11 @@ def video_chat(body: ChatRequest) -> ChatResponse:
     except DownloadError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
-        raise HTTPException(status_code=400, detail=f"拉取字幕失败：{exc}") from exc
+        raise HTTPException(status_code=400, detail="字幕暂时取不到，换一条视频或稍后再试。") from exc
 
     transcript = transcript_plain(cues, SUMMARIZE_MAX_CHARS)
     if not transcript.strip():
-        raise HTTPException(status_code=400, detail="没有可用字幕，暂时无法回答。")
+        raise HTTPException(status_code=400, detail="这条视频没有字幕，暂时没法生成笔记或回答。")
     try:
         reply = answer_video_chat(
             title,
@@ -105,4 +120,4 @@ def video_chat(body: ChatRequest) -> ChatResponse:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except LLMError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
-    return ChatResponse(reply=reply)
+    return ChatResponse(reply=to_simplified(reply))

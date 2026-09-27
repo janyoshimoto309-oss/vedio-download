@@ -125,7 +125,7 @@ class CaptionParseTests(unittest.TestCase):
 
     def test_empty_error_for_danmaku_only(self):
         msg = _empty_caption_error({"subtitles": {"danmaku": [{"url": "http://x"}]}})
-        self.assertIn("弹幕", msg)
+        self.assertIn("没有字幕", msg)
 
     def test_rate_limit_detected(self):
         self.assertTrue(_is_rate_limited(Exception("Client error '429 Too Many Requests'")))
@@ -145,7 +145,7 @@ class CaptionParseTests(unittest.TestCase):
         ):
             with self.assertRaises(Exception) as ctx:
                 _cues_from_info(object(), info, "https://www.youtube.com/watch?v=x")
-        self.assertIn("限流", str(ctx.exception))
+        self.assertIn("过一两分钟", str(ctx.exception))
 
     def test_wrapped_bilibili_json(self):
         raw = json.dumps({"code": 0, "data": {"body": [{"from": 0, "to": 1, "content": "你好"}]}})

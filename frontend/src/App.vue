@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import UrlSearch from './components/UrlSearch.vue'
 import VideoResult from './components/VideoResult.vue'
 import VideoStudyNotes from './components/VideoStudyNotes.vue'
@@ -11,12 +11,12 @@ import { downloadVideo, fetchHealth, fetchVideoInfo } from './api/video'
 
 const COPY = {
   idle: {
-    headline: '看见喜欢的，就收进手机。',
-    subhead: '把公开视频链接变成你能保存的文件。不用注册，手机也能用。',
+    headline: '贴上链接，留下文件，也留下理解。',
+    subhead: '公开视频贴进来就能下。有字幕的，还能整理大纲、要点，并针对这条视频提问。',
   },
   parsing: {
-    headline: '看见喜欢的，就收进手机。',
-    subhead: '把公开视频链接变成你能保存的文件。不用注册，手机也能用。',
+    headline: '贴上链接，留下文件，也留下理解。',
+    subhead: '公开视频贴进来就能下。有字幕的，还能整理大纲、要点，并针对这条视频提问。',
   },
   ready: {
     headline: '确认一下，再保存。',
@@ -28,7 +28,7 @@ const COPY = {
   },
   parseError: {
     headline: '这条链接还没法保存。',
-    subhead: '换一条公开视频链接再试。不用注册，贴对就能开始。',
+    subhead: '换一条公开视频链接再试。贴对就能开始。',
   },
   serviceDown: {
     headline: '稍后再来，也能马上开始。',
@@ -47,6 +47,7 @@ const info = ref(null)
 const error = ref('')
 const notice = ref('')
 const searchRef = ref(null)
+const studyPane = ref('notes')
 
 const view = computed(() => {
   if (downloading.value) return 'downloading'
@@ -77,9 +78,10 @@ const urlSnippet = computed(() => {
 
 const alert = computed(() => {
   if (view.value === 'parseError') {
+    const bot = /机器人|not a bot|Sign in to confirm/i.test(error.value || '')
     return {
       tone: 'danger',
-      title: '无法识别这个链接',
+      title: bot ? '油管暂时拦了一下' : '无法识别这个链接',
       detail: error.value || '请确认是公开可访问的视频页，而不是首页、合集或需要登录的内容。',
     }
   }
@@ -94,7 +96,7 @@ const alert = computed(() => {
     return {
       tone: 'warn',
       title: '服务暂时不可用',
-      detail: '请稍后再试。不需要注册，恢复后直接粘贴链接即可。',
+      detail: '请稍后再试。恢复后直接粘贴链接即可。',
     }
   }
   return null
@@ -108,10 +110,15 @@ onMounted(async () => {
   }
 })
 
+watch(url, () => {
+  studyPane.value = 'notes'
+})
+
 async function onParse() {
   error.value = ''
   notice.value = ''
   info.value = null
+  studyPane.value = 'notes'
   parsing.value = true
   try {
     info.value = await fetchVideoInfo(url.value.trim())
@@ -173,29 +180,33 @@ async function onChangeLink() {
       </div>
     </header>
 
-    <main class="relative flex-1 overflow-hidden px-4 pb-10 pt-10 md:pt-14">
+    <main
+      class="relative flex-1 px-4 pb-10 md:px-8"
+      :class="info ? 'overflow-visible pt-4 md:pt-5' : 'overflow-visible pt-10 md:pt-14'"
+    >
       <div
+        v-if="!info"
         class="pointer-events-none absolute left-1/2 top-8 h-[280px] w-[520px] -translate-x-[70%] rounded-full bg-[#2563EB]/15 blur-3xl"
       />
       <div
+        v-if="!info"
         class="pointer-events-none absolute left-1/2 top-16 h-[240px] w-[420px] translate-x-[10%] rounded-full bg-[#38BDF8]/20 blur-3xl"
       />
 
-      <div class="relative mx-auto max-w-content text-center">
-        <p class="text-[13px] font-medium text-accent">一条链接 · 立刻留下</p>
-        <h1 class="mt-3 font-display text-[32px] font-semibold leading-[1.15] tracking-tight text-ink md:text-[52px]">
+      <div v-if="!info" class="relative mx-auto max-w-content text-center">
+        <h1 class="font-display text-[32px] font-semibold leading-[1.15] tracking-tight text-ink md:text-[52px]">
           {{ copy.headline }}
         </h1>
-        <p class="mx-auto mt-3 max-w-xl text-base text-muted md:text-lg">
+        <p class="mx-auto mt-3 max-w-2xl text-base text-muted md:text-lg">
           {{ copy.subhead }}
         </p>
       </div>
 
-      <div class="relative mt-8">
+      <div class="relative" :class="info ? 'mx-auto max-w-[1200px]' : 'mt-8'">
         <UrlSearch v-if="showSearch" ref="searchRef" v-model="url" :loading="parsing" @parse="onParse" />
         <div
           v-else
-          class="mx-auto flex h-[52px] w-full max-w-search items-center justify-between rounded-full border border-line bg-raised px-5"
+          class="flex h-[52px] w-full items-center justify-between rounded-full border border-line bg-raised px-5"
         >
           <div class="flex min-w-0 items-center gap-2 text-sm">
             <svg class="h-4 w-4 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -210,24 +221,67 @@ async function onChangeLink() {
         </div>
       </div>
 
-      <p v-if="showSearch && !parsing" class="relative mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-muted">
-        <span v-for="item in ['无需登录', '多平台直达', '手机同样好用']" :key="item" class="inline-flex items-center gap-1.5">
-          <svg class="h-3.5 w-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
-          </svg>
-          {{ item }}
-        </span>
-      </p>
-
-      <StatusAlert v-if="alert" :tone="alert.tone" :title="alert.title" :detail="alert.detail" />
+      <StatusAlert v-if="alert" :tone="alert.tone" :title="alert.title" :detail="alert.detail" :wide="Boolean(info)" />
       <ResultSkeleton v-if="parsing" />
-      <VideoResult v-if="info" :info="info" :downloading="downloading" @download="onDownload" />
-      <VideoStudyNotes v-if="info" :url="url" />
-      <VideoAsk v-if="info" :url="url" />
+
+      <div
+        v-if="info"
+        class="relative mx-auto mt-5 grid w-full max-w-[1200px] items-start gap-5 lg:grid-cols-[minmax(320px,400px)_minmax(0,1fr)] lg:items-stretch lg:h-[calc(100dvh-10rem)] lg:min-h-[560px]"
+      >
+        <div class="lg:sticky lg:top-4 lg:self-start">
+          <VideoResult embedded :info="info" :downloading="downloading" @download="onDownload" />
+        </div>
+        <section
+          class="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-2xl border border-line bg-raised shadow-[0_1px_2px_rgba(15,23,42,0.04)] lg:h-full lg:min-h-0"
+        >
+          <div class="shrink-0 border-b border-line px-4 pb-4 pt-4">
+            <div class="grid grid-cols-2 gap-1 rounded-xl bg-surface p-1" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                class="h-10 rounded-lg text-sm font-semibold transition"
+                :class="studyPane === 'notes' ? 'bg-raised text-ink shadow-sm' : 'text-muted hover:text-ink'"
+                :aria-selected="studyPane === 'notes'"
+                @click="studyPane = 'notes'"
+              >
+                学习笔记
+              </button>
+              <button
+                type="button"
+                role="tab"
+                class="h-10 rounded-lg text-sm font-semibold transition"
+                :class="studyPane === 'ask' ? 'bg-raised text-ink shadow-sm' : 'text-muted hover:text-ink'"
+                :aria-selected="studyPane === 'ask'"
+                @click="studyPane = 'ask'"
+              >
+                问AI
+              </button>
+            </div>
+          </div>
+          <div class="relative min-h-0 flex-1 overflow-hidden">
+            <div
+              v-show="studyPane === 'notes'"
+              class="h-full overflow-y-auto overscroll-contain"
+            >
+              <VideoStudyNotes embedded inset :url="url" />
+            </div>
+            <div
+              v-show="studyPane === 'ask'"
+              class="flex h-full min-h-0 flex-col"
+            >
+              <VideoAsk embedded inset pane :url="url" />
+            </div>
+          </div>
+        </section>
+      </div>
+
       <HowItWorks v-if="showSteps" />
     </main>
 
-    <footer class="border-t border-line bg-raised py-7 text-center text-xs text-muted">
+    <footer
+      class="border-t border-line bg-raised text-center text-xs text-muted"
+      :class="info ? 'py-4' : 'py-7'"
+    >
       请尊重版权与平台规则，仅供个人学习使用。
     </footer>
   </div>

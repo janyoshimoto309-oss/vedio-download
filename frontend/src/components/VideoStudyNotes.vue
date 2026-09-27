@@ -5,6 +5,8 @@ import MindMapTree from './MindMapTree.vue'
 
 const props = defineProps({
   url: { type: String, required: true },
+  embedded: { type: Boolean, default: false },
+  inset: { type: Boolean, default: false },
 })
 
 const llmReady = ref(true)
@@ -58,11 +60,6 @@ onMounted(async () => {
   }
 })
 
-const sourceLabel = computed(() => {
-  if (!meta.value) return ''
-  return meta.value.source === 'official' ? '官方字幕' : '自动字幕'
-})
-
 const visibleTabs = computed(() => PARTS.filter((item) => hasPart(item.id)))
 
 const combinedMarkdown = computed(() => {
@@ -107,7 +104,7 @@ function partLabel(item) {
   if (item.id === 'outline' && outline.value) return '重新生成大纲'
   if (item.id === 'points' && keyPoints.value) return '重新生成要点'
   if (item.id === 'map' && mindMap.value) return '重新生成脑图'
-  if (item.id === 'transcript' && transcript.value) return '重新拉取字幕'
+  if (item.id === 'transcript' && transcript.value) return '重新获取字幕'
   return `生成${item.label}`
 }
 
@@ -159,22 +156,31 @@ function exportDoc() {
 </script>
 
 <template>
-  <section class="mx-auto mt-4 w-full max-w-search rounded-2xl border border-line bg-raised">
-    <div class="p-5 text-left">
-      <p class="text-sm font-semibold text-ink">AI 学习笔记</p>
-      <p class="mt-1 text-xs leading-relaxed text-muted">
-        点哪个就生成哪一块。生成后会出现对应 Tab，点 Tab 可回看已经生成的内容。
+  <section
+    class="w-full"
+    :class="
+      inset
+        ? ''
+        : embedded
+          ? 'rounded-2xl border border-line bg-raised'
+          : 'mx-auto mt-4 max-w-search rounded-2xl border border-line bg-raised'
+    "
+  >
+    <div class="p-5 text-left" :class="inset ? 'pb-4' : ''">
+      <p v-if="!inset" class="text-sm font-semibold text-ink">AI 学习笔记</p>
+      <p class="text-xs leading-relaxed text-muted" :class="inset ? '' : 'mt-1'">
+        选一项生成；生成后可切换查看。
       </p>
       <p v-if="!llmReady" class="mt-1 text-xs text-warn">
-        后端尚未读到 DeepSeek Key。大纲 / 要点 / 脑图不可用。字幕仍可单独拉取。
+        大纲、要点和脑图暂时不可用。字幕还可以看。
       </p>
-      <div class="mt-4 flex flex-wrap gap-2">
+      <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
         <button
           v-for="item in PARTS"
           :key="item.id"
           type="button"
           :disabled="partBusy() || !url || (item.needsKey && !llmReady)"
-          class="h-10 rounded-xl bg-accent px-3.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-70"
+          class="h-9 rounded-lg bg-accent-soft px-2.5 text-[13px] font-semibold text-accent transition hover:bg-accent/10 disabled:opacity-70"
           @click="generate(item.id)"
         >
           {{ partLabel(item) }}
@@ -191,9 +197,7 @@ function exportDoc() {
     </div>
 
     <div v-if="visibleTabs.length" class="border-t border-line px-5 pb-5 pt-4 text-left">
-      <p v-if="meta" class="text-xs text-muted">字幕语言 {{ meta.language }} · {{ sourceLabel }}</p>
-
-      <div class="mt-4 flex flex-wrap gap-2">
+      <div class="flex flex-wrap gap-2">
         <button
           v-for="item in visibleTabs"
           :key="item.id"
@@ -212,7 +216,7 @@ function exportDoc() {
           <h3 class="mt-0.5 text-sm font-semibold text-ink">{{ item.title }}</h3>
           <p v-if="item.summary" class="mt-1 text-[13px] leading-relaxed text-muted">{{ item.summary }}</p>
         </article>
-        <p v-if="!outline.length" class="text-sm text-muted">没有解析出章节。</p>
+        <p v-if="!outline.length" class="text-sm text-muted">这次没有整理出章节。</p>
       </div>
 
       <ol v-else-if="tab === 'points'" class="mt-4 list-decimal space-y-2 pl-5 text-[13px] leading-relaxed text-ink">
@@ -236,7 +240,7 @@ function exportDoc() {
           class="rounded-lg border border-line px-3 py-2 text-xs font-medium text-ink hover:bg-surface"
           @click="copyMarkdown"
         >
-          {{ copied ? '已复制' : '复制 Markdown' }}
+          {{ copied ? '已复制' : '复制' }}
         </button>
         <button
           type="button"

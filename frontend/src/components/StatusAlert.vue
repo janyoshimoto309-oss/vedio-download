@@ -3,17 +3,19 @@ defineProps({
   tone: { type: String, default: 'danger' },
   title: { type: String, required: true },
   detail: { type: String, default: '' },
+  wide: { type: Boolean, default: false },
 })
 </script>
 
 <template>
   <div
-    class="mx-auto mt-5 flex w-full max-w-search gap-3 rounded-[14px] px-4 py-3.5"
-    :class="
+    class="mx-auto mt-5 flex w-full gap-3 rounded-[14px] px-4 py-3.5"
+    :class="[
+      wide ? 'max-w-[1200px]' : 'max-w-search',
       tone === 'warn'
         ? 'border border-warn-border bg-warn-bg'
-        : 'border border-danger-border bg-danger-bg'
-    "
+        : 'border border-danger-border bg-danger-bg',
+    ]"
   >
     <svg
       class="mt-0.5 h-5 w-5 shrink-0"

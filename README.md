@@ -13,6 +13,7 @@
 | [docs/04-实现与产品差异.md](./docs/04-实现与产品差异.md) | 用户界面 vs 后端下载策略 |
 | [docs/05-视频下载功能总结.md](./docs/05-视频下载功能总结.md) | 已交付下载能力与踩坑 |
 | [docs/06-AI学习笔记功能总结.md](./docs/06-AI学习笔记功能总结.md) | 已交付学习笔记能力与踩坑 |
+| [docs/08-AI视频问答功能总结.md](./docs/08-AI视频问答功能总结.md) | 已交付解析后问答与踩坑 |
 
 ## 项目状态
 
@@ -23,7 +24,7 @@
 - 前端：Vue 3 + Vite + Tailwind CSS（端口 5173，`/api` 代理到后端）
 - 后端：Python 3.10+、FastAPI、yt-dlp、Playwright（仅抖音）、httpx（端口 8000）
 - 可选：ffmpeg（HLS/DASH 或音视频分离合并时需要）
-- 可选：`backend/.env` 的 `DEEPSEEK_API_KEY`（学习笔记，默认 `deepseek-flash`；见 `backend/.env.example` 与 https://api-docs.deepseek.com/ ）
+- 可选：`backend/.env` 的 `DEEPSEEK_API_KEY`（学习笔记与问AI，默认 `deepseek-flash`；见 `backend/.env.example` 与 https://api-docs.deepseek.com/ ）
 
 ## 本地运行
 
@@ -70,7 +71,7 @@ cd backend
 python -m unittest discover -s tests -v
 ```
 
-联网建议各测：一条 YouTube、一条 B 站、一条抖音分享口令或 `/video/{id}`。学习笔记请用**带 CC / 自动字幕**的油管或 B 站讲解，四个按钮分开点；在 `backend/.env` 配置 `DEEPSEEK_API_KEY`（不要写进 `.env.example`）。无 Key 时仍可点「生成字幕」。
+联网建议各测：一条 YouTube、一条 B 站、一条抖音分享口令或 `/video/{id}`。学习笔记与问AI请用**带 CC / 自动字幕**的油管或 B 站讲解；在 `backend/.env` 配置 `DEEPSEEK_API_KEY`（不要写进 `.env.example`）。无 Key 时仍可点「生成字幕」，问答不可用。解析成功后可直接在「问AI」连问两句，不必先生成笔记。
 
 ## 平台分流
 

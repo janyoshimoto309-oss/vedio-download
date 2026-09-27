@@ -323,7 +323,7 @@ def _fetch_cues_uncached(url: str) -> tuple[list[Cue], str, str, str]:
     except DownloadError:
         raise
     except Exception as exc:
-        raise DownloadError(f"拉取字幕失败：{exc}") from exc
+        raise DownloadError("字幕暂时取不到，换一条视频或稍后再试。") from exc
 
 
 def _fetch_douyin_cues(url: str) -> tuple[list[Cue], str, str, str]:
@@ -351,10 +351,7 @@ def _fetch_douyin_cues(url: str) -> tuple[list[Cue], str, str, str]:
         except DownloadError as exc:
             msg = str(exc)
             if "没有可用字幕" in msg or "只有弹幕" in msg:
-                raise DownloadError(
-                    "这个抖音视频没有可下载的字幕轨（画面上烧进去的字不算）。"
-                    "第一期不做语音转写。请换油管带 CC / 自动字幕的讲解。"
-                ) from exc
+                raise DownloadError("这条视频没有字幕，暂时没法生成笔记或回答。") from exc
             raise
 
 
@@ -404,18 +401,8 @@ def _aweme_caption_buckets(
 MAX_TRACK_TRIES = 8
 
 
-def _empty_caption_error(info: dict[str, Any]) -> str:
-    keys = list((info.get("subtitles") or {}).keys()) + list((info.get("automatic_captions") or {}).keys())
-    usable = [k for k in keys if _norm_lang(k) not in SKIP_LANGS]
-    if keys and not usable:
-        return (
-            "这个视频只有弹幕、没有字幕轨。第一期不做语音转写。"
-            "请换油管带 CC / 自动字幕的讲解。"
-        )
-    return (
-        "这个视频没有可用字幕（含自动字幕），第一期不做语音转写。"
-        "请换油管带 CC / 自动字幕的讲解。"
-    )
+def _empty_caption_error(_info: dict[str, Any]) -> str:
+    return "这条视频没有字幕，暂时没法生成笔记或回答。"
 
 
 def _is_rate_limited(exc: BaseException) -> bool:
@@ -428,7 +415,7 @@ def _cues_from_info(ydl: YoutubeDL, info: dict[str, Any], url: str) -> tuple[lis
     if not tracks:
         raise DownloadError(_empty_caption_error(info))
     referer = str(info.get("webpage_url") or url)
-    last_err = "字幕文件为空或无法解析"
+    last_err = "字幕读出来是空的，换一条视频试试。"
     for lang, source, track in tracks[:MAX_TRACK_TRIES]:
         try:
             inline = track.get("data")
@@ -439,8 +426,8 @@ def _cues_from_info(ydl: YoutubeDL, info: dict[str, Any], url: str) -> tuple[lis
             cues = parse_caption_payload(raw, str(track.get("ext") or "vtt"))
         except Exception as exc:
             if _is_rate_limited(exc):
-                raise DownloadError("字幕接口暂时限流，请过一两分钟再点生成学习笔记。") from exc
-            last_err = f"拉取字幕失败：{exc}"
+                raise DownloadError("字幕暂时取不到，过一两分钟再试。") from exc
+            last_err = "字幕读出来是空的，换一条视频试试。"
             continue
         if cues:
             title = str(info.get("title") or "未命名视频")

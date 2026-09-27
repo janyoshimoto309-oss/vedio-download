@@ -4,6 +4,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 const props = defineProps({
   info: { type: Object, required: true },
   downloading: { type: Boolean, default: false },
+  embedded: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['download'])
@@ -99,7 +100,10 @@ onUnmounted(() => document.removeEventListener('click', onDocClick))
 </script>
 
 <template>
-  <section class="mx-auto mt-8 w-full max-w-search rounded-2xl border border-line bg-raised">
+  <section
+    class="w-full rounded-2xl border border-line bg-raised"
+    :class="embedded ? '' : 'mx-auto mt-8 max-w-search'"
+  >
     <div class="flex flex-col gap-5 p-5 md:flex-row md:p-5">
       <img
         v-if="info.thumbnail"

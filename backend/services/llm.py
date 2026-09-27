@@ -71,7 +71,7 @@ def build_text_chat_payload(messages: list[dict[str, str]]) -> dict[str, Any]:
 def _require_key() -> None:
     if not OPENAI_API_KEY:
         raise LLMError(
-            "未配置 DeepSeek Key。请在 backend/.env 填写 DEEPSEEK_API_KEY 或 OPENAI_API_KEY 后重启后端。"
+            "笔记和问答暂时不可用。"
         )
 
 
