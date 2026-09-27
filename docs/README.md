@@ -14,7 +14,7 @@
 | [06-AI学习笔记功能总结.md](./06-AI学习笔记功能总结.md) | **已交付学习笔记能力、踩坑、配 Key、边界** |
 | [08-AI视频问答功能总结.md](./08-AI视频问答功能总结.md) | **已交付解析后问答、字幕闸门、chat API** |
 
-可选设计稿：[design.pen](./design.pen)（Pencil；与代码不一致时以 `frontend/` 为准）。
+可选设计稿：[design.pen](./design.pen)（Pencil；**2026-09-27 起**解析后双栏、Tab、首屏文案以 `frontend/` 为准，设计稿可能滞后）。
 
 ## 给 AI 的使用说明
 

@@ -21,7 +21,7 @@
 
 ## 技术栈
 
-- 前端：Vue 3 + Vite + Tailwind CSS（端口 5173，`/api` 代理到后端）
+- 前端：Vue 3 + Vite + Tailwind CSS（端口 5173，`/api` 代理到后端）；脑图画布为 `mind-elixir`（见 [06](./docs/06-AI学习笔记功能总结.md)）
 - 后端：Python 3.10+、FastAPI、yt-dlp、Playwright（仅抖音）、httpx（端口 8000）
 - 可选：ffmpeg（HLS/DASH 或音视频分离合并时需要）
 - 可选：`backend/.env` 的 `DEEPSEEK_API_KEY`（学习笔记与问AI，默认 `deepseek-flash`；见 `backend/.env.example` 与 https://api-docs.deepseek.com/ ）

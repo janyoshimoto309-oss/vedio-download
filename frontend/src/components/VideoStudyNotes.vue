@@ -1,7 +1,8 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { fetchNotesReady, summarizePart } from '../api/notes'
-import MindMapTree from './MindMapTree.vue'
+
+const MindMapCanvas = defineAsyncComponent(() => import('./MindMapCanvas.vue'))
 
 const props = defineProps({
   url: { type: String, required: true },
@@ -20,6 +21,8 @@ const markdownParts = ref({})
 const loadingPart = ref('')
 const tab = ref('')
 const copied = ref(false)
+const mapCanvasRef = ref(null)
+const exportingMap = ref(false)
 
 const PARTS = [
   { id: 'outline', label: '大纲', needsKey: true },
@@ -48,6 +51,7 @@ watch(
     markdownParts.value = {}
     loadingPart.value = ''
     tab.value = ''
+    exportingMap.value = false
   },
 )
 
@@ -141,6 +145,19 @@ function exportMarkdown() {
   downloadBlob(`${safeName()}.md`, 'text/markdown;charset=utf-8', combinedMarkdown.value)
 }
 
+async function exportMindPng() {
+  if (!mapCanvasRef.value || exportingMap.value) return
+  exportingMap.value = true
+  error.value = ''
+  try {
+    await mapCanvasRef.value.exportPng(`${safeName()}-脑图`)
+  } catch (e) {
+    error.value = e.message || '导出图片失败'
+  } finally {
+    exportingMap.value = false
+  }
+}
+
 function exportDoc() {
   if (!combinedMarkdown.value) return
   const escape = (s) =>
@@ -223,8 +240,13 @@ function exportDoc() {
         <li v-for="(p, i) in keyPoints" :key="i">{{ p }}</li>
       </ol>
 
-      <div v-else-if="tab === 'map'" class="mt-4 overflow-x-auto">
-        <MindMapTree :node="mindMap" :root="true" />
+      <div v-else-if="tab === 'map'" class="mt-4">
+        <MindMapCanvas
+          v-if="mindMap"
+          ref="mapCanvasRef"
+          :node="mindMap"
+          @error="error = $event"
+        />
       </div>
 
       <div v-else-if="tab === 'transcript'" class="mt-4 max-h-72 overflow-auto rounded-xl bg-surface px-3 py-3">
@@ -235,6 +257,15 @@ function exportDoc() {
       </div>
 
       <div v-if="combinedMarkdown" class="mt-4 flex flex-wrap gap-2">
+        <button
+          v-if="tab === 'map'"
+          type="button"
+          :disabled="exportingMap || !mapCanvasRef"
+          class="rounded-lg border border-line px-3 py-2 text-xs font-medium text-ink hover:bg-surface disabled:opacity-70"
+          @click="exportMindPng"
+        >
+          {{ exportingMap ? '正在导出…' : '导出图片' }}
+        </button>
         <button
           type="button"
           class="rounded-lg border border-line px-3 py-2 text-xs font-medium text-ink hover:bg-surface"
@@ -250,6 +281,7 @@ function exportDoc() {
           导出 Markdown
         </button>
         <button
+          v-if="tab !== 'map'"
           type="button"
           class="rounded-lg border border-line px-3 py-2 text-xs font-medium text-ink hover:bg-surface"
           @click="exportDoc"
