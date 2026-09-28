@@ -28,6 +28,8 @@
 
 ## 本地运行
 
+**一键启动（自用推荐）**：完成下方 1、2 的首次安装后，双击项目根目录 `start-local.bat`（或 PowerShell 执行 `.\start-local.ps1`），会自动起后端与前端并打开浏览器；关掉弹出的两个最小化 PowerShell 窗口即停止。
+
 ### 1. 后端
 
 ```powershell

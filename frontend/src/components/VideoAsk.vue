@@ -9,12 +9,19 @@ const props = defineProps({
   pane: { type: Boolean, default: false },
 })
 
+const STARTERS = [
+  '有没有我容易听漏的前提或限制？',
+  '他举的例子，各自想说明什么？',
+  '哪些是他的判断，哪些更像在讲事实？',
+]
+
 const llmReady = ref(true)
 const draft = ref('')
 const sending = ref(false)
 const error = ref('')
 const messages = ref([])
 const thread = ref(null)
+const inputRef = ref(null)
 
 watch(
   () => props.url,
@@ -48,6 +55,12 @@ watch(
   () => messages.value.length,
   () => scrollThread(),
 )
+
+function useStarter(text) {
+  if (sending.value || !llmReady.value || !props.url) return
+  draft.value = text
+  nextTick(() => inputRef.value?.focus())
+}
 
 async function send() {
   const text = draft.value.trim()
@@ -90,6 +103,41 @@ function onKeydown(event) {
     "
   >
     <div
+      v-if="!messages.length && !sending"
+      class="flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto overscroll-contain px-5 py-6"
+    >
+      <div class="w-full max-w-[360px] text-left">
+        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-soft">
+          <svg class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.22-.9L3 20l.9-3.6A7.5 7.5 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
+          </svg>
+        </div>
+        <h2 class="mt-3 text-[15px] font-semibold tracking-tight text-ink">针对这条视频提问</h2>
+        <p class="mt-1.5 text-[13px] leading-relaxed text-muted">
+          只根据字幕来答。视频里没说到的，它不会编。
+        </p>
+        <div class="mt-4 space-y-2">
+          <button
+            v-for="item in STARTERS"
+            :key="item"
+            type="button"
+            :disabled="sending || !llmReady || !url"
+            class="flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3.5 py-2.5 text-left text-[13px] text-ink transition hover:border-accent/30 hover:bg-accent-soft disabled:opacity-70"
+            @click="useStarter(item)"
+          >
+            <span>{{ item }}</span>
+            <span class="shrink-0 text-xs text-muted">填入</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
       v-show="messages.length || sending"
       ref="thread"
       class="min-h-0 space-y-3 overflow-y-auto overscroll-contain px-5 py-3 text-left"
@@ -128,10 +176,11 @@ function onKeydown(event) {
       <p v-else-if="!llmReady" class="text-xs text-warn">问答暂时不可用</p>
       <div class="flex items-end gap-2">
       <textarea
+        ref="inputRef"
         v-model="draft"
         rows="2"
         maxlength="2000"
-        placeholder="例如：他的结论是什么"
+        placeholder="输入你的问题"
         :disabled="sending || !llmReady || !url"
         class="min-h-[44px] flex-1 resize-none rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink outline-none placeholder:text-muted disabled:opacity-70"
         @keydown="onKeydown"
